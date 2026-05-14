@@ -1,0 +1,2523 @@
+<!DOCTYPE html>
+<html lang="bn" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>অধ্যায় ১ | তথ্য ও যোগাযোগ প্রযুক্তি ও আমাদের বাংলাদেশ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Tiro+Bangla:ital@0;1&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════
+   TOKENS
+════════════════════════════════════════ */
+:root {
+  --font-main: 'Hind Siliguri', sans-serif;
+  --font-serif: 'Tiro Bangla', serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --ch-color: #10b981;
+  --ch-dark:  #059669;
+  --ch-glow:  rgba(16,185,129,0.18);
+  --accent-2: #f59e0b;
+  --accent-3: #38bdf8;
+  --accent-4: #f43f5e;
+}
+[data-theme="dark"] {
+  --bg:       #080d12;
+  --bg2:      #0d1520;
+  --bg3:      #111c2a;
+  --surface:  rgba(255,255,255,0.04);
+  --surf2:    rgba(255,255,255,0.07);
+  --border:   rgba(255,255,255,0.08);
+  --text:     #e8f0fe;
+  --text-dim: #94a3b8;
+  --text-muted:#4a6080;
+  --shadow:   0 12px 40px rgba(0,0,0,0.6);
+}
+[data-theme="light"] {
+  --bg:       #f0f7f4;
+  --bg2:      #e4f0eb;
+  --bg3:      #d8e9e1;
+  --surface:  rgba(255,255,255,0.75);
+  --surf2:    rgba(255,255,255,0.9);
+  --border:   rgba(0,0,0,0.08);
+  --text:     #1a2e22;
+  --text-dim: #3d6050;
+  --text-muted:#7a9e8a;
+  --shadow:   0 8px 30px rgba(0,0,0,0.1);
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-main);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.85;
+  overflow-x: hidden;
+  transition: background 0.3s, color 0.3s;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(16,185,129,0.06), transparent),
+    radial-gradient(ellipse 60% 80% at 90% 80%, rgba(56,189,248,0.04), transparent);
+  pointer-events: none;
+}
+
+/* ════ TOPBAR ════ */
+.topbar {
+  position: fixed; top:0; left:0; right:0; z-index:200;
+  height: 56px;
+  background: rgba(8,13,18,0.88);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap:16px; padding: 0 20px;
+}
+[data-theme="light"] .topbar { background: rgba(240,247,244,0.9); }
+.topbar-back {
+  display: flex; align-items:center; gap:6px;
+  color: var(--text-dim); font-size:13px; text-decoration:none;
+  font-family: var(--font-mono); letter-spacing:0.5px;
+  transition: color 0.2s;
+}
+.topbar-back:hover { color: var(--ch-color); }
+.topbar-sep { width:1px; height:20px; background:var(--border); }
+.topbar-title {
+  flex:1; font-size:13px; font-weight:600;
+  color: var(--text-dim);
+}
+.topbar-title span { color: var(--ch-color); }
+.topbar-actions { display:flex; align-items:center; gap:8px; }
+.icon-btn {
+  width:34px; height:34px; border-radius:9px;
+  border:1px solid var(--border); background:var(--surface);
+  color:var(--text-dim); cursor:pointer; font-size:15px;
+  display:flex; align-items:center; justify-content:center;
+  transition: all 0.2s;
+}
+.icon-btn:hover { border-color:var(--ch-color); color:var(--ch-color); }
+
+/* ════ SIDEBAR ════ */
+.layout { display:flex; min-height:100vh; padding-top:56px; }
+.sidebar {
+  width: 272px; flex-shrink:0;
+  position: fixed; top:56px; left:0; bottom:0;
+  overflow-y: auto; overflow-x: hidden;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  padding: 20px 0;
+  z-index:100;
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.sidebar::-webkit-scrollbar { width:4px; }
+.sidebar::-webkit-scrollbar-track { background:transparent; }
+.sidebar::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+
+.sb-label {
+  font-family: var(--font-mono);
+  font-size: 9px; letter-spacing:2px;
+  color: var(--text-muted);
+  padding: 14px 20px 6px;
+  text-transform: uppercase;
+}
+.sb-item {
+  display: flex; align-items:center; gap:10px;
+  padding: 9px 20px;
+  font-size: 13px; color:var(--text-dim);
+  cursor: pointer; text-decoration:none;
+  border-left: 3px solid transparent;
+  transition: all 0.2s;
+  position: relative;
+}
+.sb-item:hover { background:var(--surface); color:var(--text); }
+.sb-item.active {
+  color: var(--ch-color);
+  border-left-color: var(--ch-color);
+  background: var(--ch-glow);
+}
+.sb-dot {
+  width:6px; height:6px; border-radius:50%;
+  background: var(--border); flex-shrink:0;
+  transition: background 0.2s;
+}
+.sb-item.active .sb-dot { background: var(--ch-color); }
+.sb-progress {
+  margin: 16px 20px 0;
+  background: var(--bg3); border-radius:99px; height:3px;
+  overflow:hidden;
+}
+.sb-progress-fill {
+  height:100%;
+  background: linear-gradient(90deg, var(--ch-color), var(--accent-3));
+  border-radius:99px; width:0%;
+  transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+.sb-prog-label {
+  font-family:var(--font-mono); font-size:10px;
+  color:var(--ch-color); margin:6px 20px 0;
+}
+
+/* ════ MAIN CONTENT ════ */
+.main {
+  flex:1; margin-left:272px;
+  max-width: 900px; padding: 40px 48px 120px;
+}
+@media (max-width:900px) {
+  .sidebar { transform:translateX(-100%); }
+  .sidebar.open { transform:translateX(0); }
+  .main { margin-left:0; padding:24px 20px 80px; }
+}
+
+/* ════ CHAPTER HERO ════ */
+.ch-hero {
+  position: relative;
+  border-radius: 28px;
+  overflow: hidden;
+  margin-bottom: 48px;
+  background: linear-gradient(135deg, #0a1f14 0%, #0d2a1a 50%, #071520 100%);
+  border: 1px solid rgba(16,185,129,0.2);
+}
+[data-theme="light"] .ch-hero {
+  background: linear-gradient(135deg,#e8f5ed,#d4eee0,#dff0ec);
+}
+.ch-hero-bg {
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 70% 80% at 80% 50%, rgba(16,185,129,0.12), transparent),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(56,189,248,0.08), transparent);
+}
+.ch-hero-grid {
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(16,185,129,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16,185,129,0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.ch-hero-inner { position:relative; z-index:1; padding:48px 48px 44px; }
+.ch-num {
+  font-family:var(--font-mono);
+  font-size:11px; letter-spacing:3px;
+  color:var(--ch-color); opacity:0.8;
+  margin-bottom:16px; display:block;
+}
+.ch-hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(26px,4vw,46px);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+.ch-hero-title em {
+  font-style:normal;
+  background: linear-gradient(135deg, var(--ch-color), #34d399, var(--accent-3));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.ch-hero-sub {
+  font-size:15px; color:var(--text-dim); max-width:540px; line-height:1.75;
+  margin-bottom:32px;
+}
+.ch-hero-meta {
+  display:flex; gap:24px; flex-wrap:wrap;
+}
+.ch-meta-pill {
+  display:flex; align-items:center; gap:7px;
+  background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.2);
+  border-radius:99px; padding:6px 14px;
+  font-family:var(--font-mono); font-size:11px; color:var(--ch-color);
+}
+.ch-learn-box {
+  margin: 0 48px 0; padding:24px;
+  background:rgba(16,185,129,0.05);
+  border:1px solid rgba(16,185,129,0.15);
+  border-radius:16px; position:relative; z-index:1;
+}
+.ch-learn-title {
+  font-family:var(--font-mono); font-size:11px; letter-spacing:2px;
+  color:var(--ch-color); margin-bottom:14px; opacity:0.8;
+}
+.ch-learn-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px;
+}
+.ch-learn-item {
+  display:flex; align-items:flex-start; gap:8px; font-size:13px; color:var(--text-dim);
+}
+.ch-learn-item::before { content:'✓'; color:var(--ch-color); flex-shrink:0; margin-top:1px; font-weight:700; }
+.ch-hero-bottom { height:24px; }
+
+/* ════ SECTION HEADINGS ════ */
+.section-block { margin-bottom: 56px; scroll-margin-top:80px; }
+.section-label {
+  font-family:var(--font-mono); font-size:10px; letter-spacing:2.5px;
+  color:var(--ch-color); text-transform:uppercase; margin-bottom:10px;
+  opacity:0.8;
+}
+.section-heading {
+  font-family:var(--font-serif);
+  font-size: clamp(20px,3vw,30px);
+  font-weight:700; line-height:1.3;
+  margin-bottom:20px;
+  color:var(--text);
+  position:relative; padding-left:20px;
+}
+.section-heading::before {
+  content:''; position:absolute; left:0; top:6px; bottom:6px;
+  width:4px; background:linear-gradient(to bottom,var(--ch-color),var(--accent-3));
+  border-radius:2px;
+}
+.section-body {
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.9;
+}
+.section-body p { margin-bottom:18px; }
+.section-body strong { color:var(--text); font-weight:600; }
+.section-body em { color:var(--ch-color); font-style:normal; font-weight:600; }
+
+/* ════ TOPIC CARD (accordion) ════ */
+.topic-card {
+  border-radius:18px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  backdrop-filter:blur(8px);
+  overflow:hidden;
+  margin-bottom:16px;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.topic-card:hover { border-color:rgba(16,185,129,0.3); }
+.topic-card.open { border-color:rgba(16,185,129,0.4); box-shadow:0 0 0 1px rgba(16,185,129,0.1), var(--shadow); }
+.topic-header {
+  display:flex; align-items:center; gap:16px;
+  padding:20px 24px; cursor:pointer;
+  user-select:none;
+}
+.topic-icon {
+  width:44px; height:44px; border-radius:12px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:22px;
+  background:var(--bg3);
+}
+.topic-card.open .topic-icon {
+  background:linear-gradient(135deg,var(--ch-color),var(--accent-3));
+}
+.topic-title-wrap { flex:1; }
+.topic-title { font-size:16px; font-weight:700; margin-bottom:3px; }
+.topic-subtitle { font-size:12px; color:var(--text-muted); font-family:var(--font-mono); }
+.topic-arrow {
+  width:28px; height:28px; border-radius:8px;
+  border:1px solid var(--border); background:var(--bg3);
+  display:flex; align-items:center; justify-content:center;
+  font-size:13px; color:var(--text-muted);
+  transition:transform 0.3s, background 0.2s;
+}
+.topic-card.open .topic-arrow { transform:rotate(180deg); background:rgba(16,185,129,0.15); color:var(--ch-color); }
+.topic-body {
+  display:none; padding:0 24px 24px;
+}
+.topic-card.open .topic-body { display:block; }
+.topic-text { font-size:14.5px; color:var(--text-dim); line-height:1.9; }
+.topic-text p { margin-bottom:16px; }
+.topic-text strong { color:var(--text); }
+.topic-text em { color:var(--ch-color); font-style:normal; }
+
+/* ════ CALLOUTS ════ */
+.callout {
+  border-radius:14px; padding:18px 20px;
+  margin:20px 0; display:flex; gap:14px; align-items:flex-start;
+}
+.callout-icon { font-size:20px; flex-shrink:0; margin-top:1px; }
+.callout-body { font-size:13.5px; line-height:1.8; }
+.callout-body strong { display:block; font-size:13px; font-weight:700; margin-bottom:5px; }
+.callout.tip {
+  background:rgba(16,185,129,0.07);
+  border:1px solid rgba(16,185,129,0.2);
+}
+.callout.tip .callout-body strong { color:var(--ch-color); }
+.callout.warn {
+  background:rgba(245,158,11,0.07);
+  border:1px solid rgba(245,158,11,0.2);
+}
+.callout.warn .callout-body strong { color:var(--accent-2); }
+.callout.error {
+  background:rgba(244,63,94,0.07);
+  border:1px solid rgba(244,63,94,0.2);
+}
+.callout.error .callout-body strong { color:var(--accent-4); }
+.callout.info {
+  background:rgba(56,189,248,0.07);
+  border:1px solid rgba(56,189,248,0.2);
+}
+.callout.info .callout-body strong { color:var(--accent-3); }
+
+/* ════ SVG DIAGRAMS ════ */
+.diagram-wrap {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:20px; padding:28px 24px; margin:28px 0;
+  text-align:center; overflow-x:auto;
+}
+.diagram-title {
+  font-family:var(--font-mono); font-size:11px; letter-spacing:1.5px;
+  color:var(--ch-color); margin-bottom:20px; opacity:0.8;
+}
+.diagram-wrap svg { max-width:100%; }
+
+/* ════ PERSON CARDS ════ */
+.persons-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:16px; margin:24px 0;
+}
+.person-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:16px; padding:20px; text-align:center;
+  transition:all 0.25s;
+}
+.person-card:hover {
+  border-color:rgba(16,185,129,0.4);
+  transform:translateY(-4px);
+  box-shadow:0 12px 32px rgba(0,0,0,0.25);
+}
+.person-avatar {
+  width:72px; height:72px; border-radius:50%;
+  background:linear-gradient(135deg,var(--bg3),var(--bg2));
+  margin:0 auto 12px;
+  display:flex; align-items:center; justify-content:center; font-size:36px;
+  border:2px solid var(--border);
+}
+.person-name { font-size:14px; font-weight:700; margin-bottom:4px; }
+.person-years { font-family:var(--font-mono); font-size:10px; color:var(--ch-color); margin-bottom:8px; }
+.person-desc { font-size:12px; color:var(--text-dim); line-height:1.65; }
+
+/* ════ INFO TABLE ════ */
+.info-table {
+  width:100%; border-collapse:collapse;
+  font-size:13.5px; margin:20px 0; border-radius:14px; overflow:hidden;
+}
+.info-table th {
+  background:linear-gradient(135deg,rgba(16,185,129,0.15),rgba(56,189,248,0.1));
+  color:var(--ch-color); font-weight:700;
+  padding:12px 16px; text-align:left;
+  font-family:var(--font-mono); font-size:11px; letter-spacing:1px;
+}
+.info-table td {
+  padding:12px 16px; border-bottom:1px solid var(--border);
+  color:var(--text-dim);
+}
+.info-table tr:last-child td { border-bottom:none; }
+.info-table tr:nth-child(even) td { background:rgba(255,255,255,0.02); }
+[data-theme="light"] .info-table tr:nth-child(even) td { background:rgba(0,0,0,0.02); }
+
+/* ════ TAGS ════ */
+.tag-row { display:flex; flex-wrap:wrap; gap:8px; margin:16px 0; }
+.tag {
+  font-size:12px; padding:5px 12px; border-radius:8px;
+  border:1px solid var(--border); color:var(--text-dim);
+  background:var(--surface); font-family:var(--font-mono);
+}
+.tag.green { background:rgba(16,185,129,0.1); border-color:rgba(16,185,129,0.3); color:#34d399; }
+.tag.amber { background:rgba(245,158,11,0.1); border-color:rgba(245,158,11,0.3); color:#fbbf24; }
+.tag.blue  { background:rgba(56,189,248,0.1); border-color:rgba(56,189,248,0.3); color:#38bdf8; }
+.tag.red   { background:rgba(244,63,94,0.1); border-color:rgba(244,63,94,0.3); color:#f87171; }
+
+/* ════ QUICK REVISION ════ */
+.revision-box {
+  background:linear-gradient(135deg,rgba(16,185,129,0.06),rgba(56,189,248,0.04));
+  border:1px solid rgba(16,185,129,0.2); border-radius:20px; padding:28px;
+  margin:32px 0;
+}
+.revision-title {
+  font-family:var(--font-mono); font-size:11px; letter-spacing:2px;
+  color:var(--ch-color); margin-bottom:18px; opacity:0.9;
+}
+.revision-list { list-style:none; display:flex; flex-direction:column; gap:10px; }
+.revision-list li {
+  display:flex; align-items:flex-start; gap:10px;
+  font-size:13.5px; color:var(--text-dim); line-height:1.7;
+}
+.revision-list li::before {
+  content:''; width:8px; height:8px; border-radius:50%;
+  background:var(--ch-color); flex-shrink:0; margin-top:7px;
+}
+.revision-list li strong { color:var(--text); }
+
+/* ════ MONE RAKHBE ════ */
+.memory-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; margin:20px 0;
+}
+.memory-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:14px; padding:18px;
+  transition:border-color 0.2s, transform 0.2s;
+}
+.memory-card:hover { border-color:rgba(16,185,129,0.35); transform:translateY(-2px); }
+.memory-card-icon { font-size:26px; margin-bottom:10px; }
+.memory-card-title { font-size:13px; font-weight:700; margin-bottom:6px; color:var(--text); }
+.memory-card-body { font-size:12.5px; color:var(--text-dim); line-height:1.7; }
+.memory-card-body strong { color:var(--ch-color); }
+
+/* ════ PRACTICE BOX ════ */
+.practice-box {
+  background:rgba(245,158,11,0.05); border:1px solid rgba(245,158,11,0.2);
+  border-radius:18px; padding:24px; margin:24px 0;
+}
+.practice-title {
+  display:flex; align-items:center; gap:8px;
+  font-weight:700; font-size:14px; color:var(--accent-2); margin-bottom:16px;
+}
+.practice-tasks { display:flex; flex-direction:column; gap:10px; }
+.practice-task {
+  display:flex; align-items:flex-start; gap:12px;
+  padding:13px 16px; border-radius:12px;
+  background:var(--surface); border:1px solid var(--border);
+  cursor:pointer; transition:all 0.2s; user-select:none;
+}
+.practice-task:hover { background:var(--surf2); }
+.practice-task.done { background:rgba(16,185,129,0.07); border-color:rgba(16,185,129,0.3); }
+.task-check {
+  width:22px; height:22px; border-radius:7px; flex-shrink:0;
+  border:2px solid var(--border); display:flex; align-items:center; justify-content:center;
+  font-size:12px; transition:all 0.25s;
+}
+.practice-task.done .task-check {
+  background:var(--ch-color); border-color:var(--ch-color); color:#fff;
+}
+.task-text { font-size:13.5px; color:var(--text-dim); line-height:1.6; }
+.practice-task.done .task-text { text-decoration:line-through; opacity:0.6; }
+.practice-progress {
+  display:flex; align-items:center; gap:10px; margin-top:14px;
+}
+.pbar { flex:1; height:5px; background:var(--bg3); border-radius:99px; overflow:hidden; }
+.pbar-fill {
+  height:100%; background:linear-gradient(90deg,var(--ch-color),var(--accent-3));
+  border-radius:99px; transition:width 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+.pbar-label { font-family:var(--font-mono); font-size:11px; color:var(--ch-color); }
+
+/* ════ MCQ QUIZ ════ */
+.quiz-section {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:24px; padding:32px; margin:40px 0;
+}
+.quiz-header {
+  display:flex; align-items:center; justify-content:space-between; margin-bottom:28px;
+}
+.quiz-title-group {}
+.quiz-title { font-family:var(--font-serif); font-size:22px; font-weight:700; margin-bottom:4px; }
+.quiz-sub { font-family:var(--font-mono); font-size:11px; color:var(--text-muted); }
+.quiz-score-pill {
+  font-family:var(--font-mono); font-size:13px; padding:6px 16px;
+  border-radius:99px; background:rgba(16,185,129,0.1);
+  border:1px solid rgba(16,185,129,0.25); color:var(--ch-color);
+}
+.quiz-progress-bar {
+  height:3px; background:var(--bg3); border-radius:99px;
+  overflow:hidden; margin-bottom:28px;
+}
+.quiz-progress-fill {
+  height:100%; background:linear-gradient(90deg,var(--ch-color),var(--accent-3));
+  border-radius:99px; transition:width 0.5s;
+}
+.q-block { display:none; animation:fadeSlideIn 0.35s ease; }
+.q-block.active { display:block; }
+@keyframes fadeSlideIn { from{opacity:0;transform:translateY(16px);} to{opacity:1;transform:translateY(0);} }
+.q-num { font-family:var(--font-mono); font-size:10px; color:var(--text-muted); margin-bottom:8px; letter-spacing:1px; }
+.q-text {
+  font-size:15px; font-weight:600; line-height:1.7;
+  padding:16px 18px; background:rgba(16,185,129,0.05);
+  border:1px solid rgba(16,185,129,0.12); border-radius:12px;
+  margin-bottom:16px; color:var(--text);
+}
+.q-passage {
+  font-size:13px; color:var(--text-dim); line-height:1.8;
+  padding:14px 16px; background:var(--surface);
+  border-radius:10px; border:1px solid var(--border);
+  margin-bottom:14px; font-style:italic;
+}
+.q-opts { display:flex; flex-direction:column; gap:8px; margin-bottom:16px; }
+.q-opt {
+  display:flex; align-items:center; gap:12px;
+  padding:12px 16px; border-radius:11px;
+  border:1px solid var(--border); background:var(--surface);
+  cursor:pointer; font-size:13.5px; color:var(--text-dim);
+  transition:all 0.2s;
+}
+.q-opt:hover:not(.locked) { background:var(--surf2); border-color:rgba(16,185,129,0.3); }
+.q-opt-key {
+  width:26px; height:26px; border-radius:8px;
+  background:var(--bg3); font-family:var(--font-mono);
+  font-size:11px; font-weight:700; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.2s;
+}
+.q-opt.correct { background:rgba(16,185,129,0.1); border-color:rgba(16,185,129,0.45); color:#34d399; }
+.q-opt.correct .q-opt-key { background:#10b981; color:#fff; }
+.q-opt.wrong { background:rgba(244,63,94,0.08); border-color:rgba(244,63,94,0.35); color:#f87171; }
+.q-opt.wrong .q-opt-key { background:#f43f5e; color:#fff; }
+.q-opt.locked { cursor:default; pointer-events:none; }
+.q-explain {
+  display:none; padding:12px 16px; border-radius:10px;
+  font-size:13px; line-height:1.7; margin-bottom:14px;
+}
+.q-explain.show { display:block; animation:fadeSlideIn 0.3s ease; }
+.q-explain.correct-exp { background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); color:#34d399; }
+.q-explain.wrong-exp { background:rgba(244,63,94,0.06); border:1px solid rgba(244,63,94,0.2); color:#f87171; }
+.q-footer { display:flex; justify-content:space-between; align-items:center; }
+.q-counter { font-family:var(--font-mono); font-size:11px; color:var(--text-muted); }
+.q-btn {
+  padding:10px 22px; border-radius:10px; border:none; cursor:pointer;
+  font-family:var(--font-main); font-size:13px; font-weight:600;
+  background:linear-gradient(135deg,var(--ch-color),#34d399);
+  color:#0a1f14; transition:all 0.2s; opacity:0.4; pointer-events:none;
+}
+.q-btn.ready { opacity:1; pointer-events:auto; }
+.q-btn.ready:hover { transform:translateY(-1px); box-shadow:0 4px 14px rgba(16,185,129,0.3); }
+.quiz-result {
+  display:none; text-align:center; padding:20px 0;
+}
+.result-emoji { font-size:56px; margin-bottom:12px; }
+.result-score {
+  font-family:var(--font-mono); font-size:40px; font-weight:700;
+  color:var(--ch-color); margin-bottom:8px;
+}
+.result-msg { font-size:15px; color:var(--text-dim); margin-bottom:24px; }
+.result-btn {
+  padding:12px 28px; border-radius:12px; border:none; cursor:pointer;
+  background:linear-gradient(135deg,var(--ch-color),var(--accent-3));
+  color:#0a1f14; font-size:14px; font-weight:700;
+  font-family:var(--font-main); transition:all 0.2s;
+}
+.result-btn:hover { transform:scale(1.04); box-shadow:0 6px 20px rgba(16,185,129,0.35); }
+
+/* ════ SEARCH ════ */
+.search-overlay {
+  position:fixed; inset:0; z-index:500;
+  background:rgba(0,0,0,0.75); backdrop-filter:blur(10px);
+  display:none; align-items:flex-start; justify-content:center; padding-top:100px;
+}
+.search-overlay.show { display:flex; }
+.search-box {
+  width:100%; max-width:580px;
+  background:var(--bg2); border:1px solid rgba(16,185,129,0.3);
+  border-radius:18px; overflow:hidden;
+  box-shadow:0 24px 64px rgba(0,0,0,0.5);
+}
+.search-input-wrap {
+  display:flex; align-items:center; gap:12px; padding:16px 20px;
+  border-bottom:1px solid var(--border);
+}
+.search-input-wrap span { font-size:20px; }
+.search-input {
+  flex:1; background:none; border:none; outline:none;
+  font-family:var(--font-main); font-size:16px; color:var(--text);
+}
+.search-results { max-height:360px; overflow-y:auto; }
+.search-result-item {
+  padding:14px 20px; border-bottom:1px solid var(--border);
+  cursor:pointer; transition:background 0.2s;
+}
+.search-result-item:hover { background:var(--surface); }
+.search-result-title { font-size:14px; font-weight:600; margin-bottom:3px; }
+.search-result-excerpt { font-size:12px; color:var(--text-muted); line-height:1.5; }
+mark { background:rgba(16,185,129,0.25); color:var(--ch-color); border-radius:3px; padding:0 2px; }
+
+/* ════ BOOKMARK ════ */
+.bm-btn {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:7px 14px; border-radius:8px; font-size:12px;
+  border:1px solid var(--border); background:var(--surface);
+  color:var(--text-muted); cursor:pointer; transition:all 0.2s;
+  font-family:var(--font-main);
+}
+.bm-btn.saved { border-color:var(--accent-2); color:var(--accent-2); background:rgba(245,158,11,0.08); }
+.bm-btn:hover { border-color:var(--accent-2); color:var(--accent-2); }
+
+/* ════ TOAST ════ */
+.toast {
+  position:fixed; bottom:28px; right:28px; z-index:999;
+  background:var(--bg2); border:1px solid rgba(16,185,129,0.35);
+  border-radius:12px; padding:14px 20px;
+  font-size:13px; color:var(--text-dim);
+  box-shadow:0 8px 24px rgba(0,0,0,0.35);
+  animation: toastIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  display:flex; align-items:center; gap:10px;
+}
+@keyframes toastIn { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+
+/* ════ MOBILE OVERLAY ════ */
+.sidebar-overlay {
+  display:none; position:fixed; inset:0; z-index:99;
+  background:rgba(0,0,0,0.55); backdrop-filter:blur(4px);
+}
+@media(max-width:900px) {
+  .sidebar-overlay.show { display:block; }
+  .main { margin-left:0; }
+}
+
+/* ════ DIVIDER ════ */
+.divider { height:1px; background:var(--border); margin:40px 0; }
+
+/* ════ RESPONSIVE ════ */
+@media(max-width:640px) {
+  .ch-hero-inner { padding:28px 24px 24px; }
+  .ch-learn-box { margin:0 24px 0; padding:18px; }
+  .persons-grid { grid-template-columns:1fr 1fr; }
+  .quiz-section { padding:20px; }
+}
+
+/* ══════════════════════════════════════════════════
+   MODULE A — LEARNING PROGRESS + ACHIEVEMENTS
+══════════════════════════════════════════════════ */
+
+/* ── Progress FAB ── */
+#prog-fab {
+  position: fixed; bottom:24px; right:24px; z-index:300;
+  display:flex; align-items:center; gap:10px;
+  background:linear-gradient(135deg,var(--ch-color),var(--accent-3));
+  color:#080d12; border:none; border-radius:99px;
+  padding:12px 20px; font-family:var(--font-main);
+  font-size:13px; font-weight:700; cursor:pointer;
+  box-shadow:0 6px 28px rgba(16,185,129,0.4);
+  transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+}
+#prog-fab:hover { transform:scale(1.06) translateY(-2px); }
+#prog-fab .fab-icon { font-size:18px; }
+
+/* ── Progress Modal ── */
+.prog-modal {
+  position:fixed; inset:0; z-index:600;
+  display:none; align-items:flex-end; justify-content:center;
+  padding:0 0 0 0;
+  background:rgba(0,0,0,0.7); backdrop-filter:blur(12px);
+}
+.prog-modal.show { display:flex; }
+.prog-panel {
+  width:100%; max-width:560px;
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:28px 28px 0 0;
+  padding:32px; position:relative;
+  animation:slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  max-height:90vh; overflow-y:auto;
+}
+@keyframes slideUp { from{transform:translateY(100%); opacity:0;} to{transform:translateY(0); opacity:1;} }
+.prog-close {
+  position:absolute; top:16px; right:16px;
+  width:34px; height:34px; border-radius:10px;
+  border:1px solid var(--border); background:var(--surface);
+  color:var(--text-dim); cursor:pointer; font-size:16px;
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.2s;
+}
+.prog-close:hover { background:rgba(244,63,94,0.12); color:#f87171; }
+.prog-title {
+  font-family:var(--font-mono); font-size:11px; letter-spacing:2px;
+  color:var(--ch-color); margin-bottom:6px; opacity:0.8;
+}
+.prog-heading { font-size:20px; font-weight:700; margin-bottom:24px; }
+
+/* ── Overall ring ── */
+.prog-ring-wrap {
+  display:flex; align-items:center; gap:24px;
+  background:rgba(16,185,129,0.05); border:1px solid rgba(16,185,129,0.15);
+  border-radius:18px; padding:20px; margin-bottom:20px;
+}
+.prog-ring {
+  position:relative; width:80px; height:80px; flex-shrink:0;
+}
+.prog-ring svg { transform:rotate(-90deg); }
+.prog-ring-track { fill:none; stroke:var(--bg3); stroke-width:8; }
+.prog-ring-fill {
+  fill:none; stroke:url(#rg); stroke-width:8;
+  stroke-linecap:round;
+  stroke-dasharray:220; stroke-dashoffset:220;
+  transition:stroke-dashoffset 1.2s cubic-bezier(0.4,0,0.2,1);
+}
+.prog-ring-text {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+}
+.prog-ring-pct { font-family:var(--font-mono); font-size:16px; font-weight:700; color:var(--ch-color); line-height:1; }
+.prog-ring-label { font-size:9px; color:var(--text-muted); margin-top:2px; }
+.prog-ring-info { flex:1; }
+.prog-ring-stat { font-size:22px; font-weight:700; color:var(--text); }
+.prog-ring-stat-label { font-size:12px; color:var(--text-muted); }
+.prog-ring-sub { font-size:12px; color:var(--text-dim); margin-top:8px; }
+
+/* ── Lesson checklist ── */
+.lesson-list { display:flex; flex-direction:column; gap:8px; margin-bottom:20px; }
+.lesson-item {
+  display:flex; align-items:center; gap:12px;
+  padding:12px 16px; border-radius:12px;
+  border:1px solid var(--border); background:var(--surface);
+  cursor:pointer; user-select:none; transition:all 0.2s;
+}
+.lesson-item:hover { background:var(--surf2); }
+.lesson-item.done {
+  background:rgba(16,185,129,0.07);
+  border-color:rgba(16,185,129,0.3);
+}
+.lesson-cb {
+  width:22px; height:22px; border-radius:7px;
+  border:2px solid var(--border); flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; transition:all 0.3s;
+}
+.lesson-item.done .lesson-cb {
+  background:linear-gradient(135deg,var(--ch-color),var(--accent-3));
+  border-color:transparent; color:#080d12;
+}
+.lesson-name { font-size:13.5px; color:var(--text-dim); flex:1; }
+.lesson-item.done .lesson-name { color:var(--text); }
+.lesson-badge {
+  font-family:var(--font-mono); font-size:9px;
+  padding:3px 8px; border-radius:6px;
+  background:rgba(16,185,129,0.12); color:var(--ch-color);
+  border:1px solid rgba(16,185,129,0.2);
+}
+
+/* ── Achievements ── */
+.badge-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+.badge-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:14px; padding:14px 10px; text-align:center;
+  transition:all 0.25s;
+  position:relative; overflow:hidden;
+}
+.badge-card.earned {
+  border-color:rgba(245,158,11,0.4);
+  background:rgba(245,158,11,0.06);
+}
+.badge-card.earned::before {
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(135deg,rgba(245,158,11,0.08),transparent);
+}
+.badge-icon { font-size:28px; margin-bottom:7px; filter:grayscale(1) opacity(0.3); }
+.badge-card.earned .badge-icon { filter:none; }
+.badge-name { font-size:10px; font-weight:700; color:var(--text-muted); line-height:1.3; }
+.badge-card.earned .badge-name { color:var(--accent-2); }
+.badge-lock { font-size:9px; color:var(--text-muted); margin-top:4px; }
+
+/* ── Resume banner ── */
+#resume-banner {
+  display:none;
+  align-items:center; gap:14px;
+  background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25);
+  border-radius:14px; padding:14px 18px; margin-bottom:24px;
+}
+#resume-banner.show { display:flex; }
+.resume-icon { font-size:22px; flex-shrink:0; }
+.resume-text { flex:1; font-size:13px; color:var(--text-dim); }
+.resume-text strong { color:var(--ch-color); display:block; margin-bottom:2px; }
+.resume-btn {
+  padding:8px 16px; border-radius:9px; border:none; cursor:pointer;
+  background:var(--ch-color); color:#080d12; font-size:12px; font-weight:700;
+  font-family:var(--font-main); white-space:nowrap;
+}
+.resume-dismiss { background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:18px; padding:0 4px; }
+
+/* ══════════════════════════════════════════════════
+   MODULE B — FULL MCQ SYSTEM
+══════════════════════════════════════════════════ */
+
+/* ── Mode selector ── */
+.mcq-system {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:24px; overflow:hidden; margin:0 0 48px;
+}
+.mcq-header {
+  padding:28px 28px 0;
+}
+.mcq-header-top {
+  display:flex; align-items:flex-start; justify-content:space-between;
+  gap:16px; flex-wrap:wrap; margin-bottom:20px;
+}
+.mcq-title-group {}
+.mcq-eyebrow {
+  font-family:var(--font-mono); font-size:10px; letter-spacing:2px;
+  color:var(--ch-color); margin-bottom:6px; opacity:0.8;
+}
+.mcq-title { font-size:22px; font-weight:700; }
+
+/* Mode tabs */
+.mode-tabs {
+  display:flex; gap:8px; padding:4px;
+  background:var(--bg3); border-radius:14px; border:1px solid var(--border);
+}
+.mode-tab {
+  display:flex; align-items:center; gap:7px;
+  padding:9px 16px; border-radius:10px; border:none;
+  font-family:var(--font-main); font-size:13px; font-weight:600;
+  cursor:pointer; color:var(--text-muted); background:none;
+  transition:all 0.2s;
+}
+.mode-tab.active {
+  background:var(--bg2); color:var(--text);
+  box-shadow:0 2px 8px rgba(0,0,0,0.25);
+}
+.mode-tab.practice.active { color:var(--ch-color); }
+.mode-tab.exam.active { color:#f43f5e; }
+
+/* Config row */
+.mcq-config {
+  display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  padding:16px 28px; background:rgba(255,255,255,0.02);
+  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+}
+.cfg-label { font-family:var(--font-mono); font-size:11px; color:var(--text-muted); }
+.cfg-select {
+  padding:7px 12px; border-radius:9px; border:1px solid var(--border);
+  background:var(--bg3); color:var(--text); font-family:var(--font-main);
+  font-size:13px; cursor:pointer;
+}
+.cfg-sep { flex:1; }
+.mcq-start-btn {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:10px 22px; border-radius:11px; border:none; cursor:pointer;
+  font-family:var(--font-main); font-size:13px; font-weight:700;
+  background:linear-gradient(135deg,var(--ch-color),#34d399);
+  color:#080d12; transition:all 0.2s;
+}
+.mcq-start-btn:hover { transform:translateY(-1px); box-shadow:0 4px 16px rgba(16,185,129,0.35); }
+.mcq-start-btn.exam-mode {
+  background:linear-gradient(135deg,#f43f5e,#7c3aed);
+  color:#fff;
+}
+
+/* ── Quiz arena ── */
+.mcq-arena { display:none; padding:28px; }
+.mcq-arena.show { display:block; }
+
+/* Status bar */
+.mcq-status {
+  display:flex; align-items:center; gap:12px; margin-bottom:20px; flex-wrap:wrap;
+}
+.mcq-q-counter {
+  font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:8px; padding:5px 12px;
+}
+.mcq-score-badge {
+  font-family:var(--font-mono); font-size:11px;
+  padding:5px 12px; border-radius:8px;
+  background:rgba(16,185,129,0.1); color:var(--ch-color);
+  border:1px solid rgba(16,185,129,0.2);
+}
+.mcq-score-badge.exam-badge {
+  background:rgba(244,63,94,0.1); color:#f87171;
+  border-color:rgba(244,63,94,0.25);
+}
+
+/* Timer */
+.mcq-timer {
+  display:none; align-items:center; gap:6px; margin-left:auto;
+  font-family:var(--font-mono); font-size:14px; font-weight:700;
+  padding:6px 14px; border-radius:9px;
+  background:rgba(244,63,94,0.1); color:#f87171;
+  border:1px solid rgba(244,63,94,0.25);
+}
+.mcq-timer.show { display:flex; }
+.mcq-timer.warning { animation:timer-pulse 0.8s ease-in-out infinite; }
+@keyframes timer-pulse { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
+
+/* Progress track */
+.mcq-prog-track {
+  height:5px; background:var(--bg3); border-radius:99px;
+  overflow:hidden; margin-bottom:24px;
+}
+.mcq-prog-fill {
+  height:100%; border-radius:99px;
+  background:linear-gradient(90deg,var(--ch-color),var(--accent-3));
+  transition:width 0.5s cubic-bezier(0.4,0,0.2,1);
+  box-shadow:0 0 10px rgba(16,185,129,0.4);
+}
+.mcq-prog-fill.exam-fill {
+  background:linear-gradient(90deg,#f43f5e,#7c3aed);
+  box-shadow:0 0 10px rgba(244,63,94,0.3);
+}
+
+/* Q card */
+.mcq-q-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:18px; padding:24px; margin-bottom:16px;
+  animation:qCardIn 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+@keyframes qCardIn { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+.mcq-q-tag {
+  font-family:var(--font-mono); font-size:9px; letter-spacing:1.5px;
+  color:var(--text-muted); margin-bottom:10px; text-transform:uppercase;
+}
+.mcq-q-text {
+  font-size:15px; font-weight:600; color:var(--text); line-height:1.75;
+  margin-bottom:18px;
+}
+.mcq-q-passage {
+  font-size:13px; color:var(--text-dim); line-height:1.8;
+  padding:14px 16px; border-radius:12px;
+  background:rgba(56,189,248,0.05); border:1px solid rgba(56,189,248,0.15);
+  margin-bottom:16px; border-left:3px solid var(--accent-3);
+}
+.mcq-opts { display:flex; flex-direction:column; gap:9px; }
+.mcq-opt {
+  display:flex; align-items:center; gap:12px;
+  padding:13px 16px; border-radius:12px;
+  border:1px solid var(--border); background:var(--surface);
+  cursor:pointer; transition:all 0.2s; user-select:none;
+}
+.mcq-opt:hover:not(.locked) { background:var(--surf2); border-color:rgba(16,185,129,0.3); transform:translateX(4px); }
+.mcq-opt-key {
+  width:28px; height:28px; border-radius:8px;
+  background:var(--bg3); font-family:var(--font-mono);
+  font-size:11px; font-weight:700; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.25s;
+}
+.mcq-opt-text { font-size:13.5px; color:var(--text-dim); flex:1; }
+.mcq-opt.selected { border-color:rgba(16,185,129,0.4); background:rgba(16,185,129,0.06); }
+.mcq-opt.selected .mcq-opt-key { background:var(--ch-color); color:#080d12; }
+.mcq-opt.correct { border-color:rgba(16,185,129,0.5); background:rgba(16,185,129,0.09); }
+.mcq-opt.correct .mcq-opt-key { background:#10b981; color:#fff; }
+.mcq-opt.correct .mcq-opt-text { color:#34d399; }
+.mcq-opt.wrong { border-color:rgba(244,63,94,0.4); background:rgba(244,63,94,0.06); }
+.mcq-opt.wrong .mcq-opt-key { background:#f43f5e; color:#fff; }
+.mcq-opt.wrong .mcq-opt-text { color:#f87171; }
+.mcq-opt.locked { cursor:default; pointer-events:none; }
+
+/* Explanation */
+.mcq-explain {
+  display:none; padding:14px 16px; border-radius:12px;
+  font-size:13px; line-height:1.75; margin-top:14px;
+  animation:qCardIn 0.3s ease;
+}
+.mcq-explain.show { display:block; }
+.mcq-explain.ok { background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.2); color:#34d399; }
+.mcq-explain.bad { background:rgba(244,63,94,0.06); border:1px solid rgba(244,63,94,0.2); color:#f87171; }
+
+/* Exam — hidden explanation */
+.exam-mode-active .mcq-explain { display:none !important; }
+
+/* Footer row */
+.mcq-q-footer {
+  display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+}
+.mcq-q-skip {
+  padding:9px 18px; border-radius:10px;
+  border:1px solid var(--border); background:var(--surface);
+  color:var(--text-muted); font-family:var(--font-main);
+  font-size:13px; cursor:pointer; transition:all 0.2s;
+}
+.mcq-q-skip:hover { background:var(--surf2); }
+.mcq-q-next {
+  padding:10px 22px; border-radius:10px; border:none; cursor:pointer;
+  font-family:var(--font-main); font-size:13px; font-weight:700;
+  background:linear-gradient(135deg,var(--ch-color),#34d399);
+  color:#080d12; opacity:0.4; pointer-events:none; transition:all 0.2s;
+}
+.mcq-q-next.ready { opacity:1; pointer-events:auto; }
+.mcq-q-next.ready:hover { transform:translateY(-1px); box-shadow:0 4px 16px rgba(16,185,129,0.3); }
+.mcq-q-next.exam-next {
+  background:linear-gradient(135deg,#f43f5e,#7c3aed); color:#fff;
+}
+
+/* ── Q-dots navigator ── */
+.mcq-dots {
+  display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px;
+}
+.mcq-dot {
+  width:28px; height:28px; border-radius:8px;
+  font-family:var(--font-mono); font-size:10px; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  border:1px solid var(--border); background:var(--bg3);
+  color:var(--text-muted); cursor:pointer; transition:all 0.2s;
+}
+.mcq-dot.current { border-color:var(--ch-color); color:var(--ch-color); background:rgba(16,185,129,0.1); }
+.mcq-dot.answered-ok { background:rgba(16,185,129,0.15); border-color:rgba(16,185,129,0.4); color:#34d399; }
+.mcq-dot.answered-bad { background:rgba(244,63,94,0.1); border-color:rgba(244,63,94,0.3); color:#f87171; }
+.mcq-dot.skipped { background:rgba(245,158,11,0.1); border-color:rgba(245,158,11,0.3); color:#fbbf24; }
+
+/* ── Result screen ── */
+.mcq-result {
+  display:none; text-align:center; padding:40px 20px;
+}
+.mcq-result.show { display:block; animation:qCardIn 0.5s ease; }
+.mcq-res-emoji { font-size:64px; margin-bottom:16px; }
+.mcq-res-ring {
+  width:120px; height:120px; margin:0 auto 20px; position:relative;
+}
+.mcq-res-ring svg { transform:rotate(-90deg); }
+.mcq-res-pct {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+}
+.mcq-res-pct-num {
+  font-family:var(--font-mono); font-size:26px; font-weight:700; color:var(--ch-color);
+}
+.mcq-res-pct-label { font-size:10px; color:var(--text-muted); }
+.mcq-res-stats {
+  display:flex; justify-content:center; gap:20px; margin-bottom:20px; flex-wrap:wrap;
+}
+.mcq-res-stat {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:12px; padding:14px 20px; min-width:90px;
+}
+.mcq-res-stat-num { font-family:var(--font-mono); font-size:22px; font-weight:700; }
+.mcq-res-stat-label { font-size:11px; color:var(--text-muted); margin-top:3px; }
+.mcq-res-msg { font-size:15px; color:var(--text-dim); margin-bottom:24px; line-height:1.7; }
+.mcq-res-btns { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+.mcq-res-btn {
+  padding:11px 24px; border-radius:11px; border:none; cursor:pointer;
+  font-family:var(--font-main); font-size:13px; font-weight:700;
+  transition:all 0.2s;
+}
+.mcq-res-btn.primary {
+  background:linear-gradient(135deg,var(--ch-color),var(--accent-3));
+  color:#080d12;
+}
+.mcq-res-btn.secondary {
+  background:var(--surface); border:1px solid var(--border); color:var(--text-dim);
+}
+.mcq-res-btn:hover { transform:translateY(-2px); }
+
+/* History log */
+.score-history {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:14px; padding:16px; margin-top:16px; text-align:left;
+}
+.score-history-title {
+  font-family:var(--font-mono); font-size:10px; letter-spacing:1.5px;
+  color:var(--ch-color); margin-bottom:12px;
+}
+.score-history-list { display:flex; flex-direction:column; gap:7px; max-height:180px; overflow-y:auto; }
+.score-history-item {
+  display:flex; align-items:center; gap:10px;
+  font-size:12px; color:var(--text-dim);
+  padding:7px 10px; border-radius:8px;
+  background:var(--bg3);
+}
+.score-history-item .sh-score {
+  font-family:var(--font-mono); font-weight:700; margin-left:auto;
+  color:var(--ch-color);
+}
+.score-history-item .sh-mode {
+  font-size:10px; padding:2px 7px; border-radius:5px;
+  background:rgba(16,185,129,0.1); color:var(--ch-color);
+}
+.score-history-item .sh-mode.exam { background:rgba(244,63,94,0.1); color:#f87171; }
+
+/* ── Sound toggle ── */
+.mcq-sound-btn {
+  padding:7px 14px; border-radius:9px;
+  border:1px solid var(--border); background:var(--surface);
+  color:var(--text-muted); font-size:12px; cursor:pointer;
+  display:flex; align-items:center; gap:5px;
+  font-family:var(--font-main); transition:all 0.2s;
+}
+.mcq-sound-btn:hover, .mcq-sound-btn.on { border-color:var(--ch-color); color:var(--ch-color); }
+
+/* ══════════════════════════════════════════════════
+   MODULE C — PRINT / PDF SYSTEM
+══════════════════════════════════════════════════ */
+
+/* ── Print button in topbar ── */
+.print-fab {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:8px 16px; border-radius:10px;
+  border:1px solid var(--border); background:var(--surface);
+  color:var(--text-dim); font-size:13px; cursor:pointer;
+  font-family:var(--font-main); transition:all 0.2s;
+}
+.print-fab:hover { border-color:var(--accent-3); color:var(--accent-3); }
+
+/* ── Print modal ── */
+.print-modal {
+  position:fixed; inset:0; z-index:700;
+  display:none; align-items:center; justify-content:center; padding:20px;
+  background:rgba(0,0,0,0.75); backdrop-filter:blur(14px);
+}
+.print-modal.show { display:flex; }
+.print-box {
+  width:100%; max-width:480px;
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:24px; padding:32px;
+  animation:qCardIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
+}
+.print-modal-title {
+  font-size:18px; font-weight:700; margin-bottom:6px;
+  display:flex; align-items:center; gap:8px;
+}
+.print-modal-sub {
+  font-size:13px; color:var(--text-muted); margin-bottom:24px;
+  font-family:var(--font-mono);
+}
+.print-options { display:flex; flex-direction:column; gap:10px; margin-bottom:24px; }
+.print-opt {
+  display:flex; align-items:center; gap:14px;
+  padding:14px 16px; border-radius:13px;
+  border:2px solid var(--border); background:var(--surface);
+  cursor:pointer; transition:all 0.2s; user-select:none;
+}
+.print-opt:hover { border-color:rgba(56,189,248,0.4); }
+.print-opt.selected { border-color:var(--accent-3); background:rgba(56,189,248,0.06); }
+.print-opt-icon { font-size:24px; }
+.print-opt-info {}
+.print-opt-name { font-size:14px; font-weight:700; }
+.print-opt-desc { font-size:12px; color:var(--text-muted); margin-top:2px; }
+.print-actions { display:flex; gap:10px; }
+.print-action-btn {
+  flex:1; padding:12px; border-radius:12px; border:none; cursor:pointer;
+  font-family:var(--font-main); font-size:13px; font-weight:700;
+  transition:all 0.2s;
+}
+.print-action-btn.go {
+  background:linear-gradient(135deg,var(--accent-3),#7c3aed); color:#fff;
+}
+.print-action-btn.cancel {
+  background:var(--surface); border:1px solid var(--border); color:var(--text-muted);
+}
+.print-action-btn:hover { transform:translateY(-1px); }
+
+/* ══════════════════════════════════════════════════
+   PRINT STYLESHEET — Hidden until @print
+══════════════════════════════════════════════════ */
+@media print {
+  /* hide all non-content elements */
+  .topbar, .sidebar, .sidebar-overlay, .search-overlay,
+  .prog-modal, #prog-fab, .print-modal, .print-fab,
+  .ch-hero-grid, .ch-hero-bg,
+  .topic-arrow, .quiz-section, .mcq-system,
+  .practice-box, .icon-btn, .bm-btn, .toast,
+  #resume-banner, .mcq-system, .quiz-section { display:none !important; }
+
+  html, body { background:#fff !important; color:#000 !important; font-size:12pt; }
+  body::before { display:none; }
+
+  .layout { display:block !important; }
+  .main { margin-left:0 !important; padding:0 !important; max-width:100% !important; }
+
+  /* Print header */
+  .print-header {
+    display:block !important;
+    padding:20pt 0 14pt; margin-bottom:18pt;
+    border-bottom:2pt solid #10b981;
+  }
+  .print-header h1 { font-size:20pt; font-weight:700; color:#000; margin-bottom:4pt; }
+  .print-header p { font-size:10pt; color:#555; }
+
+  /* Section blocks */
+  .section-block { margin-bottom:22pt; page-break-inside:avoid; }
+  .section-heading { font-size:14pt; color:#000; border-left:3pt solid #10b981; padding-left:8pt; }
+  .section-body { font-size:11pt; line-height:1.6; color:#222; }
+  .section-label { color:#10b981; font-size:9pt; }
+
+  /* topic cards — expand all */
+  .topic-body { display:block !important; }
+  .topic-card { border:1pt solid #ddd; border-radius:4pt; margin-bottom:10pt; }
+  .topic-header { padding:10pt 14pt; }
+  .topic-icon { display:none; }
+  .topic-title { font-size:12pt; font-weight:700; }
+
+  /* callouts */
+  .callout { border:1pt solid #ccc; padding:10pt; border-radius:4pt; }
+  .callout.tip { border-color:#10b981; }
+  .callout.warn { border-color:#f59e0b; }
+  .callout.error { border-color:#f43f5e; }
+  .callout.info { border-color:#38bdf8; }
+
+  /* diagrams */
+  .diagram-wrap { border:1pt solid #ddd; }
+  .diagram-wrap svg { max-width:100%; }
+
+  /* tables */
+  .info-table th { background:#f0f7f4 !important; color:#000 !important; }
+  .info-table td { color:#222 !important; }
+
+  /* persons grid */
+  .persons-grid { grid-template-columns:repeat(4,1fr) !important; }
+  .person-card { border:1pt solid #ddd; }
+  .person-avatar { display:none; }
+
+  /* memory / revision */
+  .revision-box { border:1pt solid #10b981; padding:14pt; }
+  .memory-grid { grid-template-columns:repeat(3,1fr) !important; }
+  .memory-card { border:1pt solid #ddd; }
+
+  /* page breaks */
+  #sec-pioneers, #sec-egovernance, #sec-ecommerce, #sec-revision { page-break-before:always; }
+
+  /* print footer */
+  .print-footer {
+    display:block !important;
+    text-align:center; font-size:9pt; color:#888;
+    border-top:1pt solid #ddd; padding-top:8pt; margin-top:24pt;
+  }
+}
+
+/* Hidden print elements (shown only in print) */
+.print-header, .print-footer { display:none; }
+</style>
+</head>
+<body>
+
+<!-- Search overlay -->
+<div class="search-overlay" id="search-overlay" onclick="if(e.target===this)closeSearch()">
+  <div class="search-box" onclick="event.stopPropagation()">
+    <div class="search-input-wrap">
+      <span>🔍</span>
+      <input class="search-input" id="search-input" placeholder="অধ্যায়ের ভেতরে খুঁজুন..." oninput="doSearch(this.value)" />
+      <button class="icon-btn" onclick="closeSearch()">✕</button>
+    </div>
+    <div class="search-results" id="search-results"></div>
+  </div>
+</div>
+
+<!-- Sidebar overlay -->
+<div class="sidebar-overlay" id="sb-overlay" onclick="closeSidebar()"></div>
+
+<!-- Topbar -->
+<nav class="topbar">
+  <a class="topbar-back" href="index.html">← সব অধ্যায়</a>
+  <div class="topbar-sep"></div>
+  <div class="topbar-title">অধ্যায় ১ · <span>তথ্য ও যোগাযোগ প্রযুক্তি ও আমাদের বাংলাদেশ</span></div>
+  <div class="topbar-actions">
+    <button class="icon-btn" onclick="openSearch()" title="সার্চ (Ctrl+K)">🔍</button>
+    <button class="icon-btn" id="bm-top" onclick="toggleBookmark('ch1')" title="বুকমার্ক">🔖</button>
+    <button class="print-fab" onclick="openPrintModal()">🖨️ প্রিন্ট</button>
+    <button class="icon-btn" onclick="toggleTheme()" title="থিম">🌙</button>
+    <button class="icon-btn" id="mobile-menu" onclick="toggleSidebar()" style="display:none">☰</button>
+  </div>
+</nav>
+
+<!-- PRINT MODAL -->
+<div class="print-modal" id="print-modal" onclick="if(event.target===this)closePrintModal()">
+  <div class="print-box">
+    <div class="print-modal-title">🖨️ প্রিন্ট / ডাউনলোড</div>
+    <div class="print-modal-sub">// NOTES_EXPORT · অধ্যায় ১</div>
+    <div class="print-options">
+      <div class="print-opt selected" id="popt-full" onclick="selectPrintOpt('full')"><div class="print-opt-icon">📄</div><div class="print-opt-info"><div class="print-opt-name">সম্পূর্ণ অধ্যায়</div><div class="print-opt-desc">সব বিষয়, diagram, মনে রাখবে সহ</div></div></div>
+      <div class="print-opt" id="popt-notes" onclick="selectPrintOpt('notes')"><div class="print-opt-icon">📝</div><div class="print-opt-info"><div class="print-opt-name">শুধু নোটস ও মনে রাখবে</div><div class="print-opt-desc">Quick revision ও memory cards</div></div></div>
+      <div class="print-opt" id="popt-quiz" onclick="selectPrintOpt('quiz')"><div class="print-opt-icon">🧠</div><div class="print-opt-info"><div class="print-opt-name">শুধু MCQ প্রশ্নোত্তর</div><div class="print-opt-desc">সব প্রশ্ন উত্তর সহ</div></div></div>
+    </div>
+    <div class="print-actions">
+      <button class="print-action-btn go" onclick="doPrint()">🖨️ প্রিন্ট করো</button>
+      <button class="print-action-btn cancel" onclick="closePrintModal()">বাতিল</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS MODAL -->
+<div class="prog-modal" id="prog-modal" onclick="if(event.target===this)closeProgModal()">
+  <div class="prog-panel">
+    <button class="prog-close" onclick="closeProgModal()">✕</button>
+    <div class="prog-title">// LEARNING_PROGRESS</div>
+    <div class="prog-heading">তোমার অগ্রগতি 🚀</div>
+    <div class="prog-ring-wrap">
+      <div class="prog-ring">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <defs><linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#10b981"/><stop offset="100%" style="stop-color:#38bdf8"/></linearGradient></defs>
+          <circle class="prog-ring-track" cx="40" cy="40" r="35"/>
+          <circle class="prog-ring-fill" id="ring-fill" cx="40" cy="40" r="35"/>
+        </svg>
+        <div class="prog-ring-text"><div class="prog-ring-pct" id="ring-pct">০%</div><div class="prog-ring-label">সম্পন্ন</div></div>
+      </div>
+      <div class="prog-ring-info">
+        <div class="prog-ring-stat" id="prog-lessons-done">০/১০</div>
+        <div class="prog-ring-stat-label">পাঠ সম্পন্ন</div>
+        <div class="prog-ring-sub" id="prog-last-seen">শেষ পড়া: এখনো শুরু করোনি</div>
+      </div>
+    </div>
+    <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;color:var(--ch-color);margin-bottom:10px;opacity:0.8;">// পাঠ তালিকা</div>
+    <div class="lesson-list" id="lesson-list">
+      <div class="lesson-item" data-lid="l1" onclick="toggleLesson(this)"><div class="lesson-cb"></div><div class="lesson-name">একুশ শতক ও ICT</div><div class="lesson-badge">পৃ. ১–২</div></div>
+      <div class="lesson-item" data-lid="l2" onclick="toggleLesson(this)"><div class="lesson-cb"></div><div class="lesson-name">Globalization ও Internationalization</div><div class="lesson-badge">পৃ. ২–৩</div></div>
+      <div class="lesson-item" data-lid="l3" onclick="toggleLesson(this)"><div class="lesson-cb"></div><div class="lesson-name">বিখ্যাত উদ্ভাবকরা</div><div class="lesson-badge">পৃ. ৩–৬</div></div>
+      <div class="lesson-item" data-lid="l4" onclick="toggleLesson(this)"><div class="lesson-cb"></div><div class="lesson-name">ই-লার্নিং ও বাংলাদেশ</div><div class="lesson-badge">পৃ. ৬–৭</div></div>
+      <div class="lesson-item" data-lid="l5" onclick="toggleLesson(this)"><div class="lesson-cb"></div><div class="lesson-name">ই-গভর্ন্যান্স</div><div class="lesson-badge">পৃ. ৭–৮</div></div>
+      <div class="lesson-item" data-lid="l6" onclick="toggleLesson(this)"><div class="lesson-cb"></div><div class="lesson-name">ই-সার্ভিস ও বাংলাদেশ</div><div class="lesson-badge">পৃ. ৮–৯</div></div>
+      <div class="lesson-item" data-lid="l7" onclick="toggleLesson(this)"><div class="lesson-cb"></div><div class="lesson-name">ই-কমার্স ও COD</div><div class="lesson-badge">পৃ. ৯–১০</div></div>
+      <div class="lesson-item" data-lid="l8" onclick="toggleLesson(this)"><div class="lesson-cb"></div><div class="lesson-name">সামাজিক যোগাযোগ মাধ্যম</div><div class="lesson-badge">পৃ. ১১</div></div>
+      <div class="lesson-item" data-lid="l9" onclick="toggleLesson(this)"><div class="lesson-cb"></div><div class="lesson-name">কর্মক্ষেত্রে ICT</div><div class="lesson-badge">পৃ. ১০</div></div>
+      <div class="lesson-item" data-lid="l10" onclick="toggleLesson(this)"><div class="lesson-cb"></div><div class="lesson-name">Quick Revision ও MCQ</div><div class="lesson-badge">পৃ. ১২–১৪</div></div>
+    </div>
+    <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;color:var(--accent-2);margin:18px 0 10px;opacity:0.85;">// ACHIEVEMENTS</div>
+    <div class="badge-grid" id="badge-grid">
+      <div class="badge-card" data-badge="starter"><div class="badge-icon">🌱</div><div class="badge-name">যাত্রা শুরু</div><div class="badge-lock">১ পাঠ</div></div>
+      <div class="badge-card" data-badge="halfway"><div class="badge-icon">⚡</div><div class="badge-name">মাঝপথে</div><div class="badge-lock">৫ পাঠ</div></div>
+      <div class="badge-card" data-badge="complete"><div class="badge-icon">🏆</div><div class="badge-name">সম্পন্ন</div><div class="badge-lock">১০ পাঠ</div></div>
+      <div class="badge-card" data-badge="quiz-master"><div class="badge-icon">🧠</div><div class="badge-name">Quiz Master</div><div class="badge-lock">MCQ ১০০%</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS FAB -->
+<button id="prog-fab" onclick="openProgModal()"><span class="fab-icon">📊</span><span id="fab-label">অগ্রগতি</span></button>
+
+<!-- PRINT ELEMENTS -->
+<div class="print-header"><h1>তথ্য ও যোগাযোগ প্রযুক্তি ও আমাদের বাংলাদেশ</h1><p>নবম-দশম শ্রেণি · ICT · অধ্যায় ১ · TechLab Notes</p></div>
+<div class="print-footer">TechLab ICT · অধ্যায় ১ · জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড, বাংলাদেশ</div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-label">// অধ্যায় সূচি</div>
+  <a class="sb-item active" href="#hero" onclick="sbClick(this)"><div class="sb-dot"></div>অধ্যায় পরিচিতি</a>
+  <a class="sb-item" href="#sec-ekush" onclick="sbClick(this)"><div class="sb-dot"></div>একুশ শতক ও ICT</a>
+  <a class="sb-item" href="#sec-pioneers" onclick="sbClick(this)"><div class="sb-dot"></div>বিখ্যাত উদ্ভাবকরা</a>
+  <a class="sb-item" href="#sec-elearning" onclick="sbClick(this)"><div class="sb-dot"></div>ই-লার্নিং</a>
+  <a class="sb-item" href="#sec-egovernance" onclick="sbClick(this)"><div class="sb-dot"></div>ই-গভর্ন্যান্স</a>
+  <a class="sb-item" href="#sec-eservice" onclick="sbClick(this)"><div class="sb-dot"></div>ই-সার্ভিস</a>
+  <a class="sb-item" href="#sec-ecommerce" onclick="sbClick(this)"><div class="sb-dot"></div>ই-কমার্স</a>
+  <a class="sb-item" href="#sec-social" onclick="sbClick(this)"><div class="sb-dot"></div>সামাজিক যোগাযোগ</a>
+  <a class="sb-item" href="#sec-job" onclick="sbClick(this)"><div class="sb-dot"></div>কর্মক্ষেত্রে ICT</a>
+  <a class="sb-item" href="#sec-revision" onclick="sbClick(this)"><div class="sb-dot"></div>দ্রুত পুনরাবৃত্তি</a>
+  <a class="sb-item" href="#sec-practice" onclick="sbClick(this)"><div class="sb-dot"></div>নিজে করো</a>
+  <a class="sb-item" href="#sec-quiz" onclick="sbClick(this)"><div class="sb-dot"></div>MCQ কুইজ</a>
+
+  <div class="sb-label" style="margin-top:8px">// পড়ার অগ্রগতি</div>
+  <div class="sb-progress"><div class="sb-progress-fill" id="sb-fill"></div></div>
+  <div class="sb-prog-label" id="sb-prog-label">০% সম্পন্ন</div>
+</aside>
+
+<!-- Main -->
+<div class="layout">
+<main class="main">
+
+<!-- ══════════════════════════════════════
+     HERO
+══════════════════════════════════════ -->
+<div class="ch-hero" id="hero">
+  <div class="ch-hero-bg"></div>
+  <div class="ch-hero-grid"></div>
+  <div class="ch-hero-inner">
+    <span class="ch-num">// প্রথম অধ্যায় · নবম-দশম শ্রেণি · ICT</span>
+    <h1 class="ch-hero-title">তথ্য ও যোগাযোগ প্রযুক্তি<br>ও <em>আমাদের বাংলাদেশ</em></h1>
+    <p class="ch-hero-sub">একুশ শতকের জ্ঞানভিত্তিক অর্থনীতি, বিশ্বখ্যাত উদ্ভাবকদের গল্প, বাংলাদেশে ICT-র বিস্তার — এই অধ্যায়ে আমরা জানব কীভাবে তথ্যপ্রযুক্তি আমাদের জীবন বদলে দিচ্ছে।</p>
+    <div class="ch-hero-meta">
+      <div class="ch-meta-pill">📄 পৃষ্ঠা ১–১৪</div>
+      <div class="ch-meta-pill">⏱ প্রায় ৪৫ মিনিট</div>
+      <div class="ch-meta-pill">🧠 ১৫টি MCQ</div>
+      <div class="bm-btn" id="bm-hero" onclick="toggleBookmark('ch1')" style="margin-left:auto">🔖 বুকমার্ক</div>
+    </div>
+  </div>
+  <div class="ch-learn-box">
+    <div class="ch-learn-title">// এই অধ্যায় শেষে তুমি পারবে</div>
+    <div class="ch-learn-grid">
+      <div class="ch-learn-item">একুশ শতকের সম্পদ ব্যাখ্যা করতে</div>
+      <div class="ch-learn-item">বিখ্যাত উদ্ভাবকদের অবদান বলতে</div>
+      <div class="ch-learn-item">ই-লার্নিং কী তা বুঝিয়ে বলতে</div>
+      <div class="ch-learn-item">ই-গভর্ন্যান্সের সুবিধা বর্ণনা করতে</div>
+      <div class="ch-learn-item">ই-কমার্সের ধাপ ব্যাখ্যা করতে</div>
+      <div class="ch-learn-item">বাংলাদেশে ICT-র অবদান মূল্যায়ন করতে</div>
+    </div>
+  </div>
+  <div class="ch-hero-bottom"></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION 1: একুশ শতক
+══════════════════════════════════════ -->
+<div class="section-block" id="sec-ekush">
+  <div class="section-label">// বিষয় ১.১</div>
+  <h2 class="section-heading">একুশ শতক এবং তথ্য ও যোগাযোগ প্রযুক্তি</h2>
+  <div class="section-body">
+    <p>বিগত শতাব্দীতে সম্পদ বলতে বোঝাত কৃষিজমি, খনিজ পদার্থ বা শিল্পকারখানা। কিন্তু একুশ শতকে এসে সেই ধারণা সম্পূর্ণ বদলে গেছে। এখন পৃথিবীর সবচেয়ে মূল্যবান সম্পদ হলো <strong>জ্ঞান</strong>।</p>
+    <p>যে ব্যক্তি জ্ঞান অন্বেষণ করতে পারে, জ্ঞান ধারণ করতে পারে এবং সেই জ্ঞান ব্যবহার করে নতুন কিছু তৈরি করতে পারে — সে-ই এই শতকের আসল সম্পদশালী মানুষ।</p>
+  </div>
+
+  <!-- Diagram: একুশ শতকের পরিবর্তন -->
+  <div class="diagram-wrap">
+    <div class="diagram-title">// একুশ শতকের অর্থনীতির রূপান্তর</div>
+    <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="font-family:'Hind Siliguri',sans-serif">
+      <defs>
+        <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#f43f5e;stop-opacity:0.8"/>
+          <stop offset="100%" style="stop-color:#f97316;stop-opacity:0.8"/>
+        </linearGradient>
+        <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#10b981;stop-opacity:0.9"/>
+          <stop offset="100%" style="stop-color:#38bdf8;stop-opacity:0.9"/>
+        </linearGradient>
+      </defs>
+      <!-- Old economy -->
+      <rect x="20" y="30" width="190" height="160" rx="16" fill="url(#g1)" opacity="0.15" stroke="#f43f5e" stroke-width="1.5"/>
+      <text x="115" y="58" text-anchor="middle" fill="#f87171" font-size="12" font-weight="700">বিশতম শতক</text>
+      <text x="115" y="78" text-anchor="middle" fill="#f87171" font-size="11">কৃষিজমি</text>
+      <text x="115" y="96" text-anchor="middle" fill="#f87171" font-size="11">খনিজ সম্পদ</text>
+      <text x="115" y="114" text-anchor="middle" fill="#f87171" font-size="11">শিল্পকারখানা</text>
+      <text x="115" y="132" text-anchor="middle" fill="#f87171" font-size="11">মূলধন</text>
+      <text x="115" y="158" text-anchor="middle" fill="#f87171" font-size="24">🏭</text>
+      <!-- Arrow -->
+      <path d="M 215 110 L 280 110" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr)" stroke-dasharray="5,3"/>
+      <polygon points="280,106 290,110 280,114" fill="#94a3b8"/>
+      <text x="248" y="103" text-anchor="middle" fill="#64748b" font-size="10">রূপান্তর</text>
+      <!-- New economy -->
+      <rect x="295" y="30" width="190" height="160" rx="16" fill="url(#g2)" opacity="0.15" stroke="#10b981" stroke-width="1.5"/>
+      <text x="390" y="58" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700">একুশতম শতক</text>
+      <text x="390" y="78" text-anchor="middle" fill="#34d399" font-size="11">জ্ঞান ও তথ্য</text>
+      <text x="390" y="96" text-anchor="middle" fill="#34d399" font-size="11">সৃজনশীলতা</text>
+      <text x="390" y="114" text-anchor="middle" fill="#34d399" font-size="11">প্রযুক্তি-দক্ষতা</text>
+      <text x="390" y="132" text-anchor="middle" fill="#34d399" font-size="11">মানব সম্পদ</text>
+      <text x="390" y="158" text-anchor="middle" fill="#34d399" font-size="24">🧠</text>
+      <!-- ICT -->
+      <rect x="510" y="60" width="170" height="100" rx="14" fill="rgba(56,189,248,0.1)" stroke="#38bdf8" stroke-width="1.5"/>
+      <text x="595" y="88" text-anchor="middle" fill="#38bdf8" font-size="12" font-weight="700">ICT ভূমিকা</text>
+      <text x="595" y="106" text-anchor="middle" fill="#94a3b8" font-size="10">• Globalization</text>
+      <text x="595" y="121" text-anchor="middle" fill="#94a3b8" font-size="10">• Internationalization</text>
+      <text x="595" y="136" text-anchor="middle" fill="#94a3b8" font-size="10">• সীমানাহীন বিশ্ব</text>
+    </svg>
+  </div>
+
+  <div class="topic-card" id="t-globalization">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <div class="topic-icon">🌐</div>
+      <div class="topic-title-wrap">
+        <div class="topic-title">Globalization ও Internationalization</div>
+        <div class="topic-subtitle">বিশ্বায়ন ও আন্তর্জাতিকীকরণ</div>
+      </div>
+      <div class="topic-arrow">▾</div>
+    </div>
+    <div class="topic-body">
+      <div class="topic-text">
+        <p>একুশ শতকে এসে আমরা আরও দুটি গুরুত্বপূর্ণ বিষয়ের সাথে পরিচিত হয়েছি — <em>Globalization (বৈশ্বিকীকরণ)</em> এবং <em>Internationalization (আন্তর্জাতিকীকরণ)</em>।</p>
+        <p><strong>Globalization মানে হলো:</strong> যেকোনো দেশের ভৌগোলিক সীমানা বিশ্লুয়নের কারণে নিজের দেশের গণ্ডি ছাড়িয়ে সারা পৃথিবীতে ছড়িয়ে পড়া। যেমন — আমাদের দেশের লক্ষ লক্ষ মানুষ এখন সারা পৃথিবীতে ছড়িয়ে আছে। তারা যেখানে আছে সেই অংশটুকুই "বাংলাদেশ"।</p>
+        <p><strong>সহজ উদাহরণ:</strong> ঢাকায় বসে আমেরিকার কোম্পানির জন্য কাজ করা, অস্ট্রেলিয়ার ক্লায়েন্টের সাথে মিটিং করা — এটাই Globalization।</p>
+        <div class="callout tip">
+          <div class="callout-icon">💡</div>
+          <div class="callout-body">
+            <strong>মনে রাখার কৌশল</strong>
+            Global = সারা পৃথিবী। তুমি যেখানেই থাকো, পৃথিবীর যেকোনো প্রান্তে পণ্য, সেবা ও তথ্য পাঠাতে পারছ — এটাই Globalization।
+          </div>
+        </div>
+        <p><strong>একুশ শতকের পাঁচটি মূল দক্ষতা যা তোমার থাকতে হবে:</strong></p>
+        <div class="tag-row">
+          <span class="tag green">পারস্পরিক সহযোগিতা</span>
+          <span class="tag green">যোগাযোগ দক্ষতা</span>
+          <span class="tag blue">সমস্যা সমাধান</span>
+          <span class="tag blue">Critical Thinking</span>
+          <span class="tag amber">ICT পারদর্শিতা</span>
+        </div>
+        <div class="callout warn">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-body">
+            <strong>সাধারণ ভুল</strong>
+            অনেকে মনে করে Globalization মানে পশ্চিমা সংস্কৃতি গ্রহণ করা। এটা ভুল! Globalization মানে কেবল সংযোগ ও যোগাযোগের বিস্তার — সংস্কৃতি পরিবর্তন নয়।
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-icon">📌</div>
+    <div class="callout-body">
+      <strong>AI ও একুশ শতক</strong>
+      বর্তমানে কৃত্রিম বুদ্ধিমত্তা (Artificial Intelligence বা AI) ব্যবহার করে অনেক গুরুত্বপূর্ণ কাজ সহজে ও দ্রুত করে ফেলা যাচ্ছে। ICT দক্ষতা এখন আগের চেয়ে অনেক বেশি জরুরি।
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION 2: বিখ্যাত উদ্ভাবক
+══════════════════════════════════════ -->
+<div class="section-block" id="sec-pioneers">
+  <div class="section-label">// বিষয় ১.২</div>
+  <h2 class="section-heading">তথ্য ও যোগাযোগ প্রযুক্তির বিকাশে উল্লেখযোগ্য ব্যক্তিত্ব</h2>
+  <div class="section-body">
+    <p>ICT আজ যেখানে পৌঁছেছে, সেটা এক বা দুজনের কাজ নয়। শত শত বিজ্ঞানী, উদ্ভাবক ও প্রকৌশলীর অবদানে এই প্রযুক্তি গড়ে উঠেছে। তাদের মধ্যে কয়েকজন সবচেয়ে গুরুত্বপূর্ণ।</p>
+  </div>
+
+  <div class="persons-grid">
+    <div class="person-card">
+      <div class="person-avatar">👨‍🔬</div>
+      <div class="person-name">চার্লস ব্যাবেজ</div>
+      <div class="person-years">১৭৯১–১৮৭১</div>
+      <div class="person-desc">আধুনিক কম্পিউটারের জনক। ডিফারেন্স ইঞ্জিন ও অ্যানালিটিক্যাল ইঞ্জিনের উদ্ভাবক।</div>
+    </div>
+    <div class="person-card">
+      <div class="person-avatar">👩‍💻</div>
+      <div class="person-name">আডা লাভলেস</div>
+      <div class="person-years">১৮১৫–১৮৫২</div>
+      <div class="person-desc">বিশ্বের প্রথম প্রোগ্রামার। প্রোগ্রামিং ধারণার প্রবর্তক।</div>
+    </div>
+    <div class="person-card">
+      <div class="person-avatar">🔬</div>
+      <div class="person-name">জেমস ক্লার্ক ম্যাক্সওয়েল</div>
+      <div class="person-years">১৮৩১–১৮৭৯</div>
+      <div class="person-desc">তড়িৎ চৌম্বকীয় বলের ধারণা প্রকাশ করেন — বেতার যোগাযোগের ভিত্তি।</div>
+    </div>
+    <div class="person-card">
+      <div class="person-avatar">📡</div>
+      <div class="person-name">গুগলিয়েলমো মার্কনি</div>
+      <div class="person-years">১৮৭৪–১৯৩৭</div>
+      <div class="person-desc">বেতার তরঙ্গ ব্যবহার করে বার্তা প্রেরণ। ১৮৯৭ সালে IEEE স্বীকৃতি।</div>
+    </div>
+    <div class="person-card">
+      <div class="person-avatar">🌐</div>
+      <div class="person-name">স্যার টিম বার্নার্স-লি</div>
+      <div class="person-years">জন্ম ১৯৫৫</div>
+      <div class="person-desc">World Wide Web (WWW)-এর জনক। HTTP ও HTML প্রোটোকলের উদ্ভাবক।</div>
+    </div>
+    <div class="person-card">
+      <div class="person-avatar">🍎</div>
+      <div class="person-name">স্টিভ জবস</div>
+      <div class="person-years">১৯৫৫–২০১১</div>
+      <div class="person-desc">Apple Computer প্রতিষ্ঠাতা। ব্যক্তিগত কম্পিউটার ও স্মার্টফোনের বিপ্লব।</div>
+    </div>
+    <div class="person-card">
+      <div class="person-avatar">💻</div>
+      <div class="person-name">বিল গেটস</div>
+      <div class="person-years">জন্ম ২৮ অক্টোবর, ১৯৫৫</div>
+      <div class="person-desc">Microsoft প্রতিষ্ঠাতা। MS-DOS ও Windows — আধুনিক OS-এর পথিকৃৎ।</div>
+    </div>
+    <div class="person-card">
+      <div class="person-avatar">👥</div>
+      <div class="person-name">মার্ক জাকারবার্গ</div>
+      <div class="person-years">জন্ম ১৪ মে, ১৯৮৪</div>
+      <div class="person-desc">Facebook-এর প্রতিষ্ঠাতা। ২০০৪ সালের ৪ ফেব্রুয়ারি চার বন্ধু মিলে শুরু।</div>
+    </div>
+  </div>
+
+  <!-- Timeline diagram -->
+  <div class="diagram-wrap">
+    <div class="diagram-title">// ICT বিকাশের টাইমলাইন</div>
+    <svg viewBox="0 0 680 160" xmlns="http://www.w3.org/2000/svg" style="font-family:'Hind Siliguri',sans-serif">
+      <!-- Timeline line -->
+      <line x1="30" y1="80" x2="650" y2="80" stroke="rgba(16,185,129,0.3)" stroke-width="2"/>
+      <!-- Points -->
+      <g>
+        <circle cx="60" cy="80" r="8" fill="#10b981"/>
+        <text x="60" y="60" text-anchor="middle" fill="#94a3b8" font-size="10">১৮৩৩</text>
+        <text x="60" y="110" text-anchor="middle" fill="#34d399" font-size="9">ব্যাবেজের</text>
+        <text x="60" y="122" text-anchor="middle" fill="#34d399" font-size="9">ইঞ্জিন</text>
+      </g>
+      <g>
+        <circle cx="160" cy="80" r="8" fill="#38bdf8"/>
+        <text x="160" y="60" text-anchor="middle" fill="#94a3b8" font-size="10">১৮৯৫</text>
+        <text x="160" y="110" text-anchor="middle" fill="#38bdf8" font-size="9">মার্কনির</text>
+        <text x="160" y="122" text-anchor="middle" fill="#38bdf8" font-size="9">বেতার</text>
+      </g>
+      <g>
+        <circle cx="270" cy="80" r="8" fill="#f59e0b"/>
+        <text x="270" y="60" text-anchor="middle" fill="#94a3b8" font-size="10">১৯৭১</text>
+        <text x="270" y="110" text-anchor="middle" fill="#fbbf24" font-size="9">প্রথম</text>
+        <text x="270" y="122" text-anchor="middle" fill="#fbbf24" font-size="9">ই-মেইল</text>
+      </g>
+      <g>
+        <circle cx="370" cy="80" r="8" fill="#a78bfa"/>
+        <text x="370" y="60" text-anchor="middle" fill="#94a3b8" font-size="10">১৯৮৯</text>
+        <text x="370" y="110" text-anchor="middle" fill="#a78bfa" font-size="9">WWW</text>
+        <text x="370" y="122" text-anchor="middle" fill="#a78bfa" font-size="9">আবিষ্কার</text>
+      </g>
+      <g>
+        <circle cx="470" cy="80" r="8" fill="#f43f5e"/>
+        <text x="470" y="60" text-anchor="middle" fill="#94a3b8" font-size="10">২০০৪</text>
+        <text x="470" y="110" text-anchor="middle" fill="#f87171" font-size="9">Facebook</text>
+        <text x="470" y="122" text-anchor="middle" fill="#f87171" font-size="9">চালু</text>
+      </g>
+      <g>
+        <circle cx="570" cy="80" r="8" fill="#10b981"/>
+        <text x="570" y="60" text-anchor="middle" fill="#94a3b8" font-size="10">২০১৮</text>
+        <text x="570" y="110" text-anchor="middle" fill="#34d399" font-size="9">বাংলাদেশ</text>
+        <text x="570" y="122" text-anchor="middle" fill="#34d399" font-size="9">স্যাটেলাইট</text>
+      </g>
+      <g>
+        <circle cx="640" cy="80" r="8" fill="#38bdf8" stroke="#38bdf8" stroke-width="2" fill-opacity="0.3"/>
+        <text x="640" y="60" text-anchor="middle" fill="#94a3b8" font-size="10">বর্তমান</text>
+        <text x="640" y="110" text-anchor="middle" fill="#38bdf8" font-size="9">AI যুগ</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <div class="topic-icon">📡</div>
+      <div class="topic-title-wrap">
+        <div class="topic-title">চার্লস ব্যাবেজ ও আডা লাভলেস — বিস্তারিত</div>
+        <div class="topic-subtitle">কম্পিউটারের সূচনা ও প্রোগ্রামিং ধারণা</div>
+      </div>
+      <div class="topic-arrow">▾</div>
+    </div>
+    <div class="topic-body">
+      <div class="topic-text">
+        <p><strong>চার্লস ব্যাবেজ (১৭৯১–১৮৭১):</strong> ইংরেজ প্রকৌশলী ও গণিতবিদ। তিনি <em>ডিফারেন্স ইঞ্জিন</em> তৈরি করেন — এটি ছিল যান্ত্রিকভাবে গণনা করার মেশিন। পরে <em>অ্যানালিটিক্যাল ইঞ্জিন</em> নামে একটি সার্বজনীন গণনাযন্ত্রের পরিকল্পনা করেন।</p>
+        <p>১৯৯১ সালে লন্ডনের বিজ্ঞান জাদুঘর চার্লস ব্যাবেজের বর্ণনা অনুসারে একটি ইঞ্জিন তৈরি করে — এবং সেটি সফলভাবে কাজ করে!</p>
+        <p><strong>আডা লাভলেস (১৮১৫–১৮৫২):</strong> কবি লর্ড বায়রনের কন্যা। মায়ের কারণে ছোটবেলা থেকে বিজ্ঞান ও গণিতে আগ্রহী হন। ১৮৩৩ সালে চার্লস ব্যাবেজের সাথে পরিচয়ের পর তিনি অ্যানালিটিক্যাল ইঞ্জিনের জন্য <em>'প্রোগ্রামিং'-এর ধারণা</em> সামনে নিয়ে আসেন।</p>
+        <div class="callout tip">
+          <div class="callout-icon">🎯</div>
+          <div class="callout-body">
+            <strong>পরীক্ষায় আসে এই প্রশ্নটি!</strong>
+            আডা লাভলেসের মৃত্যুর ১০০ বছর পর, ১৯৫৩ সালে তাঁর নোট আবারো প্রকাশিত হলে বিজ্ঞানীরা বুঝতে পারেন — তিনিই অ্যালগরিদমের ধারণা প্রকাশ করেছিলেন। তাই তাঁকে প্রথম প্রোগ্রামার বলা হয়।
+          </div>
+        </div>
+        <p><strong>স্যার টিম বার্নার্স-লি:</strong> ১৯৮৯ সালে HTTP প্রোটোকল ব্যবহার করে তথ্য ব্যবস্থাপনার প্রস্তাব দেন। তিনি <em>World Wide Web (WWW)</em>-এর জনক। তাঁর উদ্ভাবনের ফলে ইন্টারনেট বিশ্বব্যাপী ছড়িয়ে পড়ে।</p>
+        <p><strong>রেমন্ড স্যামুয়েল টমলিনসন:</strong> ১৯৭১ সালে ARPANET-এ ইলেকট্রনিক মাধ্যমে প্রথম ই-মেইল পাঠান। তিনিই প্রথম ই-মেইল পদ্ধতি চালু করেন।</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION 3: ই-লার্নিং
+══════════════════════════════════════ -->
+<div class="section-block" id="sec-elearning">
+  <div class="section-label">// বিষয় ১.৩</div>
+  <h2 class="section-heading">ই-লার্নিং ও বাংলাদেশ</h2>
+
+  <div class="topic-card open">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <div class="topic-icon">📚</div>
+      <div class="topic-title-wrap">
+        <div class="topic-title">ই-লার্নিং কী? সহজ ব্যাখ্যা</div>
+        <div class="topic-subtitle">Electronic Learning — বিস্তারিত জানো</div>
+      </div>
+      <div class="topic-arrow">▾</div>
+    </div>
+    <div class="topic-body">
+      <div class="topic-text">
+        <p>পৃথিবীতে জ্ঞান অর্জনের একটি সুনির্দিষ্ট পদ্ধতি দীর্ঘদিন থেকে মোটামুটি একইভাবে কাজ করে আসছিল — শ্রেণিকক্ষ, শিক্ষক, বই। কিন্তু তথ্যপ্রযুক্তির উন্নতির পর সেই পদ্ধতিতে একটি বড় পরিবর্তন এলো — <em>ই-লার্নিং</em>।</p>
+        <p><strong>ই-লার্নিং মানে কী?</strong> "ই-লার্নিং" শব্দটি "ইলেকট্রনিক লার্নিং" কথাটির সংক্ষিপ্ত রূপ। এটা বলতে আমরা পাঠদান করার জন্য সিডি-রম, ইন্টারনেট, ব্যক্তিগত নেটওয়ার্ক কিংবা টেলিভিশন চ্যানেল ব্যবহার করার পদ্ধতিকে বুঝিয়ে থাকি।</p>
+
+        <!-- Diagram: ই-লার্নিং vs সনাতন -->
+        <div class="diagram-wrap" style="margin:20px 0">
+          <div class="diagram-title">// ই-লার্নিং বনাম সনাতন শিক্ষা</div>
+          <svg viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg" style="font-family:'Hind Siliguri',sans-serif">
+            <!-- Traditional -->
+            <rect x="10" y="10" width="270" height="175" rx="14" fill="rgba(244,63,94,0.06)" stroke="rgba(244,63,94,0.3)" stroke-width="1.5"/>
+            <text x="145" y="36" text-anchor="middle" fill="#f87171" font-size="13" font-weight="700">সনাতন শিক্ষা</text>
+            <text x="145" y="58" text-anchor="middle" fill="#94a3b8" font-size="11">🏫 নির্দিষ্ট শ্রেণিকক্ষ</text>
+            <text x="145" y="78" text-anchor="middle" fill="#94a3b8" font-size="11">⏰ নির্দিষ্ট সময়সূচি</text>
+            <text x="145" y="98" text-anchor="middle" fill="#94a3b8" font-size="11">👨‍🏫 সরাসরি শিক্ষক</text>
+            <text x="145" y="118" text-anchor="middle" fill="#94a3b8" font-size="11">📝 হাতে-কলমে লেখা</text>
+            <text x="145" y="138" text-anchor="middle" fill="#94a3b8" font-size="11">✅ তাৎক্ষণিক মিথস্ক্রিয়া</text>
+            <text x="145" y="160" text-anchor="middle" fill="#f43f5e" font-size="10">⚠ ভৌগোলিক সীমাবদ্ধতা</text>
+            <!-- E-learning -->
+            <rect x="345" y="10" width="265" height="175" rx="14" fill="rgba(16,185,129,0.06)" stroke="rgba(16,185,129,0.3)" stroke-width="1.5"/>
+            <text x="477" y="36" text-anchor="middle" fill="#34d399" font-size="13" font-weight="700">ই-লার্নিং</text>
+            <text x="477" y="58" text-anchor="middle" fill="#94a3b8" font-size="11">🌍 যেকোনো স্থান থেকে</text>
+            <text x="477" y="78" text-anchor="middle" fill="#94a3b8" font-size="11">⌚ যেকোনো সময়</text>
+            <text x="477" y="98" text-anchor="middle" fill="#94a3b8" font-size="11">🔄 বারবার দেখা যায়</text>
+            <text x="477" y="118" text-anchor="middle" fill="#94a3b8" font-size="11">🎥 মাল্টিমিডিয়া উপস্থাপন</text>
+            <text x="477" y="138" text-anchor="middle" fill="#94a3b8" font-size="11">💰 খরচ কম</text>
+            <text x="477" y="160" text-anchor="middle" fill="#10b981" font-size="10">✅ সীমাহীন শিক্ষার্থী</text>
+            <!-- vs -->
+            <text x="310" y="106" text-anchor="middle" fill="#64748b" font-size="18" font-weight="700">VS</text>
+          </svg>
+        </div>
+
+        <div class="callout error">
+          <div class="callout-icon">❌</div>
+          <div class="callout-body">
+            <strong>সাধারণ ভুল ধারণা — এটি পরীক্ষায় আসে!</strong>
+            অনেকে ভাবে ই-লার্নিং সনাতন শিক্ষার <strong>বিকল্প</strong>। এটা সম্পূর্ণ ভুল। ই-লার্নিং সনাতন শিক্ষার <strong>পরিপূরক</strong> — মানে পাশাপাশি চলে, প্রতিস্থাপন করে না।
+          </div>
+        </div>
+
+        <p><strong>বাংলাদেশে ই-লার্নিংয়ের সুযোগ ও সমস্যা:</strong></p>
+        <p>বাংলাদেশ একটি বৃহৎ জনগোষ্ঠীর দেশ। শিক্ষার্থী সংখ্যা বিপুল কিন্তু দক্ষ শিক্ষকের অভাব রয়েছে। ল্যাবরেটরির অপ্রতুলতা, হাতে-কলমে বিজ্ঞানের এক্সপেরিমেন্ট করার সুযোগ খুব কম। এই সমস্যাগুলো সমাধানে ই-লার্নিং বড় ভূমিকা রাখতে পারে।</p>
+        <p>বর্তমান সরকার গুরুত্বের সাথে এ ধরনের শিক্ষনসামগ্রী (Learning Materials) সহজলভ্য করার প্রয়োজন রয়েছে।</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION 4: ই-গভর্ন্যান্স
+══════════════════════════════════════ -->
+<div class="section-block" id="sec-egovernance">
+  <div class="section-label">// বিষয় ১.৪</div>
+  <h2 class="section-heading">ই-গভর্ন্যান্স ও বাংলাদেশ</h2>
+
+  <div class="section-body">
+    <p>গুড গভর্ন্যান্স বা সুশাসনের জন্য দরকার স্বচ্ছতা ও জবাবদিহিতা। ডিজিটাল ব্যবস্থা প্রচলনের মাধ্যমে সরকারি ব্যবস্থাসমূহকে আধুনিক ও যুগোপযোগী করার পাশাপাশি সরকারি ব্যবস্থাসমূহের স্বচ্ছতা ও জবাবদিহিতা নিশ্চিত করা সম্ভব। এর ফলে নাগরিকের হয়রানি ও বিড়ম্বনার অবসান ঘটে এবং দেশে সুশাসনের পথ নিষ্কণ্টক হয়। শাসন ব্যবস্থায় ও প্রক্রিয়ায় ইলেকট্রনিক বা ডিজিটাল পন্থার প্রয়োগই হচ্ছে <em>ই-গভর্ন্যান্স</em>।</p>
+  </div>
+
+  <!-- E-Governance diagram -->
+  <div class="diagram-wrap">
+    <div class="diagram-title">// ই-গভর্ন্যান্স কীভাবে কাজ করে</div>
+    <svg viewBox="0 0 640 240" xmlns="http://www.w3.org/2000/svg" style="font-family:'Hind Siliguri',sans-serif">
+      <!-- Center: Government -->
+      <rect x="240" y="85" width="160" height="70" rx="14" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="2"/>
+      <text x="320" y="116" text-anchor="middle" fill="#34d399" font-size="13" font-weight="700">সরকার</text>
+      <text x="320" y="134" text-anchor="middle" fill="#94a3b8" font-size="11">ই-গভর্ন্যান্স</text>
+      <!-- Arrows -->
+      <path d="M 185 95 L 238 106" stroke="rgba(16,185,129,0.5)" stroke-width="1.5" marker-end="url(#agreen)"/>
+      <path d="M 238 130 L 185 140" stroke="rgba(16,185,129,0.5)" stroke-width="1.5" marker-end="url(#agreen)"/>
+      <path d="M 402 106 L 455 95" stroke="rgba(16,185,129,0.5)" stroke-width="1.5" marker-end="url(#agreen)"/>
+      <path d="M 455 140 L 402 130" stroke="rgba(16,185,129,0.5)" stroke-width="1.5" marker-end="url(#agreen)"/>
+      <!-- Services -->
+      <rect x="10" y="25" width="170" height="50" rx="10" fill="rgba(56,189,248,0.08)" stroke="rgba(56,189,248,0.3)" stroke-width="1.5"/>
+      <text x="95" y="47" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="600">নাগরিক সেবা</text>
+      <text x="95" y="64" text-anchor="middle" fill="#94a3b8" font-size="10">ই-পর্চা, ভর্তি, পরীক্ষা ফলাফল</text>
+      <rect x="10" y="155" width="170" height="50" rx="10" fill="rgba(56,189,248,0.08)" stroke="rgba(56,189,248,0.3)" stroke-width="1.5"/>
+      <text x="95" y="177" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="600">স্বাস্থ্যসেবা</text>
+      <text x="95" y="194" text-anchor="middle" fill="#94a3b8" font-size="10">টেলিমেডিসিন, ই-স্বাস্থ্যসেবা</text>
+      <rect x="460" y="25" width="170" height="50" rx="10" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.3)" stroke-width="1.5"/>
+      <text x="545" y="47" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="600">আর্থিক সেবা</text>
+      <text x="545" y="64" text-anchor="middle" fill="#94a3b8" font-size="10">ই-টিকিটিং, মোবাইল ব্যাংকিং</text>
+      <rect x="460" y="155" width="170" height="50" rx="10" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.3)" stroke-width="1.5"/>
+      <text x="545" y="177" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="600">ভূমি সেবা</text>
+      <text x="545" y="194" text-anchor="middle" fill="#94a3b8" font-size="10">ই-পর্চা, রেকর্ড অনুলিপি</text>
+      <!-- IDI score -->
+      <rect x="230" y="175" width="180" height="52" rx="10" fill="rgba(244,63,94,0.08)" stroke="rgba(244,63,94,0.3)" stroke-width="1.5"/>
+      <text x="320" y="197" text-anchor="middle" fill="#f87171" font-size="11" font-weight="600">IDI সূচক ২০২৪</text>
+      <text x="320" y="215" text-anchor="middle" fill="#94a3b8" font-size="10">বাংলাদেশ ১৯৩টি দেশের মধ্যে ১০০তম</text>
+    </svg>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <div class="topic-icon">🏛️</div>
+      <div class="topic-title-wrap">
+        <div class="topic-title">ই-গভর্ন্যান্সের সুবিধা — পরীক্ষার জন্য</div>
+        <div class="topic-subtitle">কেন ই-গভর্ন্যান্স জরুরি?</div>
+      </div>
+      <div class="topic-arrow">▾</div>
+    </div>
+    <div class="topic-body">
+      <div class="topic-text">
+        <p>একটা সময় ছিল যখন পাবলিক পরীক্ষার ফলাফল সংগ্রহ করা ছিল পরীক্ষার্থী ও তাদের অভিভাবকদের জন্য এক বিড়ম্বনার ব্যাপার। বিশেষ করে প্রধান প্রধান শহর থেকে দূরবর্তী গ্রামে অবস্থানরতদের পক্ষে এটি ছিল দুষ্কর। মাত্র দুই-দশক আগেও এসএসসি বা এইচএসসি পরীক্ষার ফলাফল প্রকাশের সাত দিন পরেও অনেকে তাদের ফলাফল জানতে পারত না। কিন্তু বর্তমানে ফল প্রকাশের সাথে সাথে ইন্টারনেট ও মোবাইল ফোনে এসএমএসের মাধ্যমে ফলাফল জানা যায়।</p>
+        <table class="info-table">
+          <thead>
+            <tr>
+              <th>আগে (ই-গভর্ন্যান্স ছাড়া)</th>
+              <th>এখন (ই-গভর্ন্যান্স সহ)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>সরাসরি অফিসে যেতে হতো</td><td>ঘরে বসেই সেবা পাওয়া যায়</td></tr>
+            <tr><td>দিনের পর দিন অপেক্ষা</td><td>২-৫ দিনের মধ্যে কাজ সম্পন্ন</td></tr>
+            <tr><td>কাগজপত্রের ঝামেলা</td><td>ডিজিটাল রেকর্ড</td></tr>
+            <tr><td>হয়রানি ও দুর্নীতির সুযোগ</td><td>স্বচ্ছতা ও জবাবদিহিতা বৃদ্ধি</td></tr>
+            <tr><td>দূরবর্তী মানুষের পক্ষে কঠিন</td><td>দেশের যেকোনো প্রান্ত থেকে সেবা</td></tr>
+          </tbody>
+        </table>
+        <div class="callout tip">
+          <div class="callout-icon">📊</div>
+          <div class="callout-body">
+            <strong>ITU-এর IDI সূচক</strong>
+            ই-গভর্ন্যান্স উন্নয়নের অবস্থা উপস্থাপন করার জন্য ই-গভর্নমেন্ট ডেভেলপমেন্ট ইনডেক্স (E-Government Development Index) ব্যবহৃত হয়। ২০২৪ সালে প্রণীত এই ইনডেক্সে বাংলাদেশের অবস্থান ১৯৩টি দেশের মধ্যে ১০০তম।
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION 5: ই-সার্ভিস
+══════════════════════════════════════ -->
+<div class="section-block" id="sec-eservice">
+  <div class="section-label">// বিষয় ১.৫</div>
+  <h2 class="section-heading">ই-সার্ভিস ও বাংলাদেশ</h2>
+
+  <div class="section-body">
+    <p>সরকারি ও বেসরকারি অনেক সেবামূলক সংস্থা সার্বক্ষণিকভাবে অথবা সময়ে সময়ে দেশের জনগণকে বিভিন্ন সেবা প্রদান করে থাকে। ডিজিটাল পন্থা চালু হওয়ার পূর্বে এই সকল সেবার ক্ষেত্রে সেবাগ্রহীতাকে অবশ্যই সেবাদাতার সঙ্গে সরাসরি যোগাযোগ করতে হতো। কিন্তু ডিজিটাল পন্থিতে সেবাগ্রহীতা নিজ বাড়িতে বসেই মোবাইল ফোনে বা ইন্টারনেটে একই সেবা গ্রহণ করতে পারে।</p>
+    <p>ই-সেবার প্রধান বৈশিষ্ট্য হলো — এটি <em>স্বল্প খরচে, স্বল্প সময়ে এবং হয়রানিমুক্ত সেবা নিশ্চিত করে।</em></p>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <div class="topic-icon">📋</div>
+      <div class="topic-title-wrap">
+        <div class="topic-title">বাংলাদেশের গুরুত্বপূর্ণ ই-সেবাসমূহ</div>
+        <div class="topic-subtitle">পরীক্ষায় এগুলো থেকে প্রশ্ন আসে</div>
+      </div>
+      <div class="topic-arrow">▾</div>
+    </div>
+    <div class="topic-body">
+      <div class="topic-text">
+        <p><strong>ক. ই-পূর্জি:</strong> দেশের প্রথম দিককার ই-সেবাসমূহের একটি। দেশের ১৫টি চিনিকলের সকল আখচাষি এখন এসএমএসের মাধ্যমে পূর্জির তথ্য পাচ্ছে। পূর্জি হচ্ছে চিনিকলসমূহে কখন আখ সরবরাহ করতে হবে সে জন্য আওতাধীন আখচাষিদের দেওয়া একটি অনুমতিপত্র।</p>
+        <p><strong>খ. ইলেকট্রনিক মানি ট্রান্সফার সিস্টেম (ই-এমটিএস):</strong> বাংলাদেশ ডাক বিভাগের ইলেকট্রনিক মানি ট্রান্সফার সিস্টেমের মাধ্যমে দেশের এক অঞ্চল থেকে অন্য অঞ্চলে নিরাপদে, দ্রুত ও কম খরচে টাকা পাঠানো যায়। ১ মিনিটের মধ্যে ৫০ হাজার টাকা পর্যন্ত পাঠানো যায়।</p>
+        <p><strong>গ. ই-পর্চা সেবা:</strong> বর্তমানে দেশের সকল জমির রেকর্ডের অনুলিপি অনলাইনে সংগ্রহ করা যায়। আবেদনকারী দেশ-বিদেশের যেকোনো স্থান থেকেই নির্দিষ্ট ফি জমা দিয়ে পর্চা সংগ্রহ করতে পারেন।</p>
+        <p><strong>ঘ. ই-স্বাস্থ্যসেবা:</strong> বিভিন্ন সরকারি স্বাস্থ্যকেন্দ্রে কর্মরত চিকিৎসকরা এখন মোবাইল ফোনে স্বাস্থ্য বিষয়ক পরামর্শ দিয়ে থাকেন। দেশের কয়েকটি হাসপাতালে টেলিমেডিসিন সেবা চালু হয়েছে।</p>
+        <p><strong>ঙ. রেলওয়ের ই-টিকিটিং ও মোবাইল টিকিটিং:</strong> বাংলাদেশ রেলওয়ের কয়েকটি আন্তঃনগর ট্রেনের টিকিট এখন মোবাইল ফোনেও ক্রয় করা যায়। অনলাইনেও টিকিট সংগ্রহের ব্যবস্থা রয়েছে।</p>
+        <div class="callout info">
+          <div class="callout-icon">🛰️</div>
+          <div class="callout-body">
+            <strong>বাংলাদেশ স্যাটেলাইট-১</strong>
+            ২০১৮ সালের ১২ই মে তারিখটি আমাদের জন্য খুবই গুরুত্বপূর্ণ। এদিনে বাংলাদেশ বিশ্বের ৫৭তম রাষ্ট্র হিসেবে তার নিজস্ব স্যাটেলাইট — বাংলাদেশ স্যাটেলাইট-১ মহাকাশে প্রেরণ করে।
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION 6: ই-কমার্স
+══════════════════════════════════════ -->
+<div class="section-block" id="sec-ecommerce">
+  <div class="section-label">// বিষয় ১.৬</div>
+  <h2 class="section-heading">ই-কমার্স ও বাংলাদেশ</h2>
+
+  <div class="section-body">
+    <p>একটি দেশের অর্থনৈতিক বিকাশ ও কর্মসংস্থানের ক্ষেত্রে বাণিজ্যের কোনো বিকল্প নেই। ডিজিটাল প্রযুক্তির বিকাশ ইন্টারনেটের উদ্ভব ও বিকাশ এবং কাগজের মুদ্রার বাইরেও ইলেকট্রনিক বিনিময় প্রথা চালু হওয়ার ফলে বাণিজ্যেরও একটি বিশেষ পরিবর্তন হয়েছে। এখন ইলেকট্রনিক মাধ্যমেও বাণিজ্য করা যায়, যার প্রচলিত নাম <em>ই-কমার্স</em> বা ই-বাণিজ্য।</p>
+  </div>
+
+  <!-- E-commerce flow -->
+  <div class="diagram-wrap">
+    <div class="diagram-title">// ই-কমার্সের তিনটি ধাপ</div>
+    <svg viewBox="0 0 620 140" xmlns="http://www.w3.org/2000/svg" style="font-family:'Hind Siliguri',sans-serif">
+      <defs>
+        <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#10b981"/>
+        </marker>
+      </defs>
+      <!-- Step 1 -->
+      <rect x="20" y="20" width="160" height="100" rx="14" fill="rgba(56,189,248,0.1)" stroke="rgba(56,189,248,0.35)" stroke-width="1.5"/>
+      <text x="100" y="50" text-anchor="middle" fill="#38bdf8" font-size="26">🛍️</text>
+      <text x="100" y="74" text-anchor="middle" fill="#38bdf8" font-size="12" font-weight="700">ধাপ ১</text>
+      <text x="100" y="92" text-anchor="middle" fill="#94a3b8" font-size="11">ক্রেতা পণ্য</text>
+      <text x="100" y="108" text-anchor="middle" fill="#94a3b8" font-size="11">অর্ডার দেয়</text>
+      <!-- Arrow 1 -->
+      <line x1="185" y1="70" x2="225" y2="70" stroke="#10b981" stroke-width="2" marker-end="url(#arw)"/>
+      <!-- Step 2 -->
+      <rect x="230" y="20" width="160" height="100" rx="14" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.35)" stroke-width="1.5"/>
+      <text x="310" y="50" text-anchor="middle" fill="#34d399" font-size="26">💳</text>
+      <text x="310" y="74" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700">ধাপ ২</text>
+      <text x="310" y="92" text-anchor="middle" fill="#94a3b8" font-size="11">মূল্য পরিশোধ</text>
+      <text x="310" y="108" text-anchor="middle" fill="#94a3b8" font-size="11">কার্ড/মোবাইল/COD</text>
+      <!-- Arrow 2 -->
+      <line x1="395" y1="70" x2="435" y2="70" stroke="#10b981" stroke-width="2" marker-end="url(#arw)"/>
+      <!-- Step 3 -->
+      <rect x="440" y="20" width="160" height="100" rx="14" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.35)" stroke-width="1.5"/>
+      <text x="520" y="50" text-anchor="middle" fill="#fbbf24" font-size="26">📦</text>
+      <text x="520" y="74" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="700">ধাপ ৩</text>
+      <text x="520" y="92" text-anchor="middle" fill="#94a3b8" font-size="11">পণ্য ডেলিভারি</text>
+      <text x="520" y="108" text-anchor="middle" fill="#94a3b8" font-size="11">কুরিয়ার সার্ভিসে</text>
+    </svg>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <div class="topic-icon">🛒</div>
+      <div class="topic-title-wrap">
+        <div class="topic-title">ই-কমার্সের বিস্তারিত — COD কী?</div>
+        <div class="topic-subtitle">পরীক্ষায় বারবার আসে</div>
+      </div>
+      <div class="topic-arrow">▾</div>
+    </div>
+    <div class="topic-body">
+      <div class="topic-text">
+        <p>যেকোনো পণ্য বা সেবা বাণিজ্যের কয়েকটি শর্ত থাকে। প্রথমত, বিক্রেতার কাছে পণ্য থাকা। দ্বিতীয়ত, ক্রেতা কর্তৃক তার বিনিময়মূল্য পরিশোধ করা। এর প্রচলিত পন্থা হলো বিক্রেতার সঙ্গে ক্রেতার সরাসরি যোগাযোগ।</p>
+        <p>কিন্তু ইন্টারনেটের যুগে একজন বিক্রেতা তার পণ্যের ছবি, ভিডিও দিয়ে ইন্টারনেটেই তার <em>'দোকান'টি খুলে বসতে পারেন।</em> একজন ক্রেতা অনলাইনে তার পছন্দের পণ্যটি বাছাই করেন এবং মূল্য পরিশোধ করেন।</p>
+        <p><strong>মোবাইল বা কার্ড ছাড়াও ই-কমার্সে আরও একটি বিল পরিশোধ পদ্ধতি রয়েছে।</strong> এটিকে বলা হয় প্রাপ্তির পর পরিশোধ বা <em>ক্যাশ অন ডেলিভারি (COD)</em>। এই পদ্ধতিতে ক্রেতা বিক্রেতার ওয়েবসাইটে পছন্দের পণ্যটির অর্ডার দেন। বিক্রেতা তখন পণ্যটি ক্রেতার কাছে পাঠিয়ে দেন। ক্রেতা পণ্য পেয়ে বিল পরিশোধ করেন।</p>
+        <div class="callout tip">
+          <div class="callout-icon">💡</div>
+          <div class="callout-body">
+            <strong>COD = Cash on Delivery</strong>
+            COD পদ্ধতি নিরাপদ কারণ ক্রেতা পণ্য না পাওয়া পর্যন্ত টাকা দেন না। অনলাইন প্রতারণার ভয় থাকে না।
+          </div>
+        </div>
+        <div class="callout warn">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-body">
+            <strong>সাধারণ ভুল</strong>
+            অনেকে মনে করে ই-কমার্সে শুধু অনলাইনে টাকা দিতে হয়। এটা ভুল! COD-এ পণ্য পেলে নগদে টাকা দেওয়া যায়।
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION 7: সামাজিক যোগাযোগ
+══════════════════════════════════════ -->
+<div class="section-block" id="sec-social">
+  <div class="section-label">// বিষয় ১.৭</div>
+  <h2 class="section-heading">সামাজিক যোগাযোগ ও আইসিটি</h2>
+
+  <div class="section-body">
+    <p>মানুষ সমাজবদ্ধ জীব। সমাজে চলাফেরা ও বিকাশের জন্য মানুষে মানুষে যোগাযোগের প্রয়োজন। তবে এখন আইসিটিতে সামাজিক যোগাযোগ বলতে নেটওয়ার্কের মাধ্যমে মানুষে মানুষে মিথস্ক্রিয়াকেই বোঝায়।</p>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <div class="topic-icon">📱</div>
+      <div class="topic-title-wrap">
+        <div class="topic-title">বাংলাদেশে জনপ্রিয় সামাজিক মাধ্যম</div>
+        <div class="topic-subtitle">Facebook, Twitter, Instagram, LinkedIn</div>
+      </div>
+      <div class="topic-arrow">▾</div>
+    </div>
+    <div class="topic-body">
+      <div class="topic-text">
+        <p><strong>ফেসবুক (www.facebook.com):</strong> ফেসবুক একটি জনপ্রিয় সামাজিক যোগাযোগ মাধ্যম। ২০০৪ সালের ৪ঠা ফেব্রুয়ারি মার্ক জাকারবার্গ তার অন্য তিন বন্ধুর সাথে নিয়ে এটি চালু করেন। ব্যবহারকারীগণ বন্ধু সংযোজন, বার্তা প্রেরণ এবং তাদের ব্যক্তিগত তথ্যাবলি প্রকাশ, আদান-প্রদান ও হালনাগাদ করতে পারেন।</p>
+        <p><strong>টুইটার (www.twitter.com) বা X:</strong> টুইটারও একটি সামাজিক যোগাযোগ মাধ্যম। তবে ফেসবুকের সঙ্গে এর একটি মৌলিক পার্থক্য রয়েছে — এটিতে ব্যবহারকারীদের সর্বোচ্চ ২৮০ Character-এর মধ্যে তাদের মনোভাব প্রকাশ ও আদান-প্রদান করতে হয়। ২৮০ অক্ষরের এই বার্তাকে বলা হয় <em>টুইট (tweet)</em>।</p>
+        <p><strong>ইনস্টাগ্রাম (www.instagram.com):</strong> ইনস্টাগ্রাম হলো একটি জনপ্রিয় সামাজিক যোগাযোগ ব্যবস্থা। এটা ২০১০ সালে চালু হয়েছিল। এতে মূলত ছবি ও ভিডিও শেয়ার করা হয়। এতে রিল (reels) ও কেনাকাটার সুযোগও রয়েছে।</p>
+        <p><strong>লিংকডইন (www.linkedin.com):</strong> এটি বিশ্বের সবচেয়ে বড় পেশাদার সামাজিক মাধ্যম। ২০০৩ সালে চালু হয়। এটি মূলত চাকরির খোঁজা, পেশাগত যোগাযোগ তৈরি এবং ব্যবসায়িক নেটওয়ার্ক গঠনে ব্যবহৃত হয়।</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <div class="topic-icon">🎮</div>
+      <div class="topic-title-wrap">
+        <div class="topic-title">বিনোদন ও আইসিটি</div>
+        <div class="topic-subtitle">গেম, সিনেমা, সংগীত — ডিজিটাল বিনোদন</div>
+      </div>
+      <div class="topic-arrow">▾</div>
+    </div>
+    <div class="topic-body">
+      <div class="topic-text">
+        <p>তথ্য ও যোগাযোগ প্রযুক্তির উন্নয়নের সাথে সাথে বিনোদনের জগতে একটা নতুন দিক উন্মোচিত হয়েছে। এটি ঘটেছে দুইভাবে:</p>
+        <p><strong>প্রথমত</strong> — বিনোদনটি কীভাবে মানুষ গ্রহণ করবে সেই প্রক্রিয়াটিতে একটি মৌলিক পরিবর্তন এসেছে। একটা সময় ছিল যখন বিনোদনের জন্য মানুষকে ঘরের বাইরে যেতে হতো। এখন চার দেওয়ালের ভেতরে আবদ্ধ থেকেই পৃথিবীর প্রায় সব ধরনের বিনোদন উপভোগ করতে পারে।</p>
+        <p><strong>দ্বিতীয়ত</strong> — বিনোদনের বিষয়বস্তুগুলোতে গুণগত পরিবর্তন এসেছে। কম্পিউটার গেমস এখন একটি বিশাল শিল্প। অ্যানিমেশন বা কার্টুন তৈরি করা এক সময় অনেক কঠিন একটি বিষয় ছিল, কিন্তু তথ্যপ্রযুক্তি এবং শক্তিশালী কম্পিউটারের কারণে এখন এটি অনেক সহজ।</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION 8: কর্মক্ষেত্রে ICT
+══════════════════════════════════════ -->
+<div class="section-block" id="sec-job">
+  <div class="section-label">// বিষয় ১.৮</div>
+  <h2 class="section-heading">বাংলাদেশের কর্মক্ষেত্রে আইসিটি</h2>
+
+  <div class="topic-card">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <div class="topic-icon">💼</div>
+      <div class="topic-title-wrap">
+        <div class="topic-title">ICT কর্মসংস্থান তৈরি করছে</div>
+        <div class="topic-subtitle">ফ্রিল্যান্সিং, আউটসোর্সিং, নতুন পেশা</div>
+      </div>
+      <div class="topic-arrow">▾</div>
+    </div>
+    <div class="topic-body">
+      <div class="topic-text">
+        <p>বিশ্বের অন্যান্য দেশের মতো বাংলাদেশেও এখন কর্মক্ষেত্রে আইসিটির বহুমুখী প্রভাব ও ব্যবহার লক্ষ করা যাচ্ছে। এই প্রভাব ও পরিসর ক্রমাগত বেড়ে চলেছে।</p>
+        <p><strong>প্রথমত</strong> — প্রচলিত কর্মক্ষেত্রগুলোতে আইসিটির প্রয়োগের ফলে কর্মদক্ষতার বৃদ্ধি ও বাজার সম্প্রসারিত হচ্ছে।</p>
+        <p><strong>দ্বিতীয়ত</strong> — আইসিটি নিজেই নতুন নতুন কর্মক্ষেত্র সৃষ্টি করেছে। হার্ডওয়্যার, সফটওয়্যার থেকে শুরু করে ওয়েবসাইট নির্মাণ, রক্ষণাবেক্ষণ ইত্যাদি এখন নতুন দক্ষ কর্মীদের জন্য একটি বিশাল কর্মক্ষেত্র।</p>
+        <p><strong>আউটসোর্সিং:</strong> কেবল দেশে নয়, আইসিটিতে দক্ষ কর্মীরা দেশের বাইরে কোনো প্রতিষ্ঠানে অথবা স্বতন্ত্রভাবে কাজ করতে পারে। এই কাজের একটি বড় অংশ দেশে বসেই সম্পন্ন করা যায়। আউটসোর্সিং করে এখন অনেকেই বাংলাদেশের জন্য মূল্যবান বৈদেশিক মুদ্রা অর্জন করছে।</p>
+        <div class="callout tip">
+          <div class="callout-icon">🏆</div>
+          <div class="callout-body">
+            <strong>বাংলাদেশ ফ্রিল্যান্সিংয়ে বিশ্বে দ্বিতীয়</strong>
+            ফ্রিল্যান্সিং-এ বাংলাদেশ বিশ্বে দ্বিতীয় স্থানে রয়েছে। ঘরে বসেই ডলারে আয় করা সম্ভব — ICT দক্ষতাই এর চাবিকাঠি।
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════
+     QUICK REVISION
+══════════════════════════════════════ -->
+<div class="section-block" id="sec-revision">
+  <div class="revision-box">
+    <div class="revision-title">// দ্রুত পুনরাবৃত্তি (Quick Revision)</div>
+    <ul class="revision-list">
+      <li><strong>একুশ শতকের সম্পদ:</strong> জ্ঞান — কৃষি বা খনিজ নয়।</li>
+      <li><strong>Globalization:</strong> ভৌগোলিক সীমানা ছাড়িয়ে বিশ্বব্যাপী ছড়িয়ে পড়া। ICT এটা সম্ভব করেছে।</li>
+      <li><strong>চার্লস ব্যাবেজ (১৭৯১–১৮৭১):</strong> আধুনিক কম্পিউটারের জনক। ডিফারেন্স ইঞ্জিন ও অ্যানালিটিক্যাল ইঞ্জিনের উদ্ভাবক।</li>
+      <li><strong>আডা লাভলেস (১৮১৫–১৮৫২):</strong> বিশ্বের প্রথম প্রোগ্রামার। প্রোগ্রামিং ধারণার প্রবর্তক।</li>
+      <li><strong>স্যার টিম বার্নার্স-লি:</strong> WWW (World Wide Web)-এর জনক।</li>
+      <li><strong>মার্ক জাকারবার্গ (জন্ম: ১৪ মে, ১৯৮৪):</strong> ফেসবুকের প্রতিষ্ঠাতা। ২০০৪ সালের ৪ ফেব্রুয়ারি চালু।</li>
+      <li><strong>ই-লার্নিং:</strong> Electronic Learning। সনাতন শিক্ষার পরিপূরক, বিকল্প নয়।</li>
+      <li><strong>ই-গভর্ন্যান্স:</strong> শাসন ব্যবস্থায় ডিজিটাল পন্থার প্রয়োগ। IDI-তে বাংলাদেশ ১০০তম।</li>
+      <li><strong>COD:</strong> Cash on Delivery — পণ্য পেলে টাকা দাও।</li>
+      <li><strong>টুইট:</strong> Twitter-এ সর্বোচ্চ ২৮০ অক্ষরের বার্তা।</li>
+      <li><strong>বাংলাদেশ স্যাটেলাইট-১:</strong> ২০১৮ সালের ১২ই মে উৎক্ষেপিত। বিশ্বের ৫৭তম স্যাটেলাইট দেশ।</li>
+      <li><strong>বাংলাদেশ ফ্রিল্যান্সিং:</strong> বিশ্বে দ্বিতীয় স্থান।</li>
+    </ul>
+  </div>
+
+  <!-- Memory cards -->
+  <h3 style="font-size:16px;font-weight:700;margin:28px 0 16px;color:var(--text)">📌 মনে রাখবে</h3>
+  <div class="memory-grid">
+    <div class="memory-card">
+      <div class="memory-card-icon">🧠</div>
+      <div class="memory-card-title">একুশ শতকের সম্পদ</div>
+      <div class="memory-card-body">কৃষি বা খনিজ নয়, <strong>জ্ঞান</strong>-ই এখন পৃথিবীর প্রধান সম্পদ।</div>
+    </div>
+    <div class="memory-card">
+      <div class="memory-card-icon">💻</div>
+      <div class="memory-card-title">কম্পিউটারের জনক</div>
+      <div class="memory-card-body"><strong>চার্লস ব্যাবেজ</strong> — ডিফারেন্স ইঞ্জিন ও অ্যানালিটিক্যাল ইঞ্জিন তৈরি করেন।</div>
+    </div>
+    <div class="memory-card">
+      <div class="memory-card-icon">👩‍💻</div>
+      <div class="memory-card-title">প্রথম প্রোগ্রামার</div>
+      <div class="memory-card-body"><strong>আডা লাভলেস</strong> — প্রোগ্রামিং ধারণার প্রবর্তক। লর্ড বায়রনের কন্যা।</div>
+    </div>
+    <div class="memory-card">
+      <div class="memory-card-icon">🌐</div>
+      <div class="memory-card-title">WWW-এর জনক</div>
+      <div class="memory-card-body"><strong>টিম বার্নার্স-লি</strong> — ১৯৮৯ সালে HTTP প্রোটোকল প্রস্তাব করেন।</div>
+    </div>
+    <div class="memory-card">
+      <div class="memory-card-icon">📚</div>
+      <div class="memory-card-title">ই-লার্নিং মনে রাখো</div>
+      <div class="memory-card-body">সনাতন শিক্ষার <strong>পরিপূরক</strong> — বিকল্প নয়। ICT ব্যবহার করে শেখা।</div>
+    </div>
+    <div class="memory-card">
+      <div class="memory-card-icon">🛒</div>
+      <div class="memory-card-title">COD মানে কী?</div>
+      <div class="memory-card-body"><strong>Cash on Delivery</strong> — পণ্য পেলে তারপর টাকা দাও। অনলাইনে আগে দিতে হয় না।</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PRACTICE
+══════════════════════════════════════ -->
+<div class="section-block" id="sec-practice">
+  <div class="practice-box">
+    <div class="practice-title">✅ নিজে করো — Practice Tasks</div>
+    <div class="practice-tasks" id="practice-tasks">
+      <div class="practice-task" onclick="toggleTask(this)">
+        <div class="task-check"></div>
+        <div class="task-text">তোমার পরিবারে প্রতিদিন কতজন ইন্টারনেট ব্যবহার করে — একটি তালিকা তৈরি করো এবং কে কী কাজে ব্যবহার করে তা লেখো।</div>
+      </div>
+      <div class="practice-task" onclick="toggleTask(this)">
+        <div class="task-check"></div>
+        <div class="task-text">যেকোনো একটি ই-কমার্স সাইটে (Daraz, Chaldal বা Shajgoj) গিয়ে একটি পণ্য অর্ডার করার সম্পূর্ণ ধাপগুলো নোট করো।</div>
+      </div>
+      <div class="practice-task" onclick="toggleTask(this)">
+        <div class="task-check"></div>
+        <div class="task-text">চার্লস ব্যাবেজ ও আডা লাভলেসের অবদান তুলনা করে একটি সংক্ষিপ্ত প্যারাগ্রাফ লেখো।</div>
+      </div>
+      <div class="practice-task" onclick="toggleTask(this)">
+        <div class="task-check"></div>
+        <div class="task-text">তোমার এলাকায় কোনো ফ্রিল্যান্সার আছে কিনা খোঁজো। না থাকলে অনলাইনে একজন বাংলাদেশি ফ্রিল্যান্সারের সাফল্যের গল্প পড়ো।</div>
+      </div>
+      <div class="practice-task" onclick="toggleTask(this)">
+        <div class="task-check"></div>
+        <div class="task-text">বাংলাদেশ সরকারের যেকোনো একটি ই-সেবা (ই-পর্চা বা মোবাইল ব্যাংকিং) ব্যবহার করে অভিজ্ঞতা লেখো।</div>
+      </div>
+      <div class="practice-task" onclick="toggleTask(this)">
+        <div class="task-check"></div>
+        <div class="task-text">ই-লার্নিং ও সনাতন শিক্ষার মধ্যে ৫টি মিল ও ৫টি পার্থক্য একটি টেবিলে লেখো।</div>
+      </div>
+    </div>
+    <div class="practice-progress">
+      <div class="pbar"><div class="pbar-fill" id="task-fill" style="width:0%"></div></div>
+      <div class="pbar-label" id="task-label">০/৬ সম্পন্ন</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     MCQ QUIZ
+══════════════════════════════════════ -->
+<div class="section-block" id="sec-quiz">
+  <div class="quiz-section">
+    <div class="quiz-header">
+      <div class="quiz-title-group">
+        <div class="quiz-title">MCQ কুইজ — অধ্যায় ১</div>
+        <div class="quiz-sub">// BOARD_MCQ_BANK · নমুনা প্রশ্ন সহ</div>
+      </div>
+      <div class="quiz-score-pill" id="q-score">স্কোর: ০/১৫</div>
+    </div>
+    <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="q-prog" style="width:6.67%"></div></div>
+
+    <div id="q-container">
+
+      <!-- Q1 -->
+      <div class="q-block active" id="q1">
+        <div class="q-num">প্রশ্ন ০১ / ১৫ · বোর্ড প্রশ্ন ২০২৩</div>
+        <div class="q-text">লন্ডন বিজ্ঞান জাদুঘর যান্ত্রিকভাবে গণনা করতে সক্ষম ইঞ্জিন কত সালে তৈরি করে?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="answer(this,1,'q1',false,'১৯৯১ সালে লন্ডনের বিজ্ঞান জাদুঘর চার্লস ব্যাবেজের বর্ণনা অনুসারে একটি ইঞ্জিন তৈরি করে।')"><div class="q-opt-key">ক</div>১৮৩৩</div>
+          <div class="q-opt" onclick="answer(this,1,'q1',false,'১৯৯১ সালে লন্ডনের বিজ্ঞান জাদুঘর চার্লস ব্যাবেজের বর্ণনা অনুসারে একটি ইঞ্জিন তৈরি করে।')"><div class="q-opt-key">খ</div>১৮৪২</div>
+          <div class="q-opt" onclick="answer(this,1,'q1',true,'১৯৯১ সালে লন্ডনের বিজ্ঞান জাদুঘর চার্লস ব্যাবেজের বর্ণনা অনুসারে একটি ইঞ্জিন তৈরি করে।')"><div class="q-opt-key">গ</div>১৯৯১</div>
+          <div class="q-opt" onclick="answer(this,1,'q1',false,'১৯৯১ সালে লন্ডনের বিজ্ঞান জাদুঘর চার্লস ব্যাবেজের বর্ণনা অনুসারে একটি ইঞ্জিন তৈরি করে।')"><div class="q-opt-key">ঘ</div>১৮৯৫</div>
+        </div>
+        <div class="q-explain" id="q1-exp"></div>
+        <div class="q-footer"><div class="q-counter">১ / ১৫</div><button class="q-btn" id="q1-btn" onclick="nextQ(1)">পরের প্রশ্ন →</button></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="q-block" id="q2">
+        <div class="q-num">প্রশ্ন ০২ / ১৫ · বোর্ড প্রশ্ন ২০২৩</div>
+        <div class="q-text">কোন আবিষ্কারকের আবিষ্কারের ফলে আজকের পৃথিবীতে ঘরে বসেই অফিসের কাজ করা সম্ভব হচ্ছে?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="answer(this,2,'q2',false,'স্যার টিম বার্নার্স-লি HTTP প্রোটোকল ও WWW উদ্ভাবন করেন, যার ফলে ইন্টারনেট বিশ্বব্যাপী ছড়িয়ে পড়ে এবং ঘরে বসেই অফিসের কাজ সম্ভব হয়েছে।')"><div class="q-opt-key">ক</div>চার্লস ব্যাবেজ</div>
+          <div class="q-opt" onclick="answer(this,2,'q2',false,'স্যার টিম বার্নার্স-লি HTTP প্রোটোকল ও WWW উদ্ভাবন করেন, যার ফলে ইন্টারনেট বিশ্বব্যাপী ছড়িয়ে পড়ে এবং ঘরে বসেই অফিসের কাজ সম্ভব হয়েছে।')"><div class="q-opt-key">খ</div>আডা লাভলেস</div>
+          <div class="q-opt" onclick="answer(this,2,'q2',true,'স্যার টিম বার্নার্স-লি HTTP প্রোটোকল ও WWW উদ্ভাবন করেন, যার ফলে ইন্টারনেট বিশ্বব্যাপী ছড়িয়ে পড়ে এবং ঘরে বসেই অফিসের কাজ সম্ভব হয়েছে।')"><div class="q-opt-key">গ</div>জেমস ক্লার্ক ম্যাক্সওয়েল</div>
+          <div class="q-opt" onclick="answer(this,2,'q2',false,'স্যার টিম বার্নার্স-লি HTTP প্রোটোকল ও WWW উদ্ভাবন করেন, যার ফলে ইন্টারনেট বিশ্বব্যাপী ছড়িয়ে পড়ে এবং ঘরে বসেই অফিসের কাজ সম্ভব হয়েছে।')"><div class="q-opt-key">ঘ</div>জগদীশচন্দ্র বসু</div>
+        </div>
+        <div class="q-explain" id="q2-exp"></div>
+        <div class="q-footer"><div class="q-counter">২ / ১৫</div><button class="q-btn" id="q2-btn" onclick="nextQ(2)">পরের প্রশ্ন →</button></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="q-block" id="q3">
+        <div class="q-num">প্রশ্ন ০৩ / ১৫ · বোর্ড প্রশ্ন ২০২৩</div>
+        <div class="q-text">ফেসবুকের অন্যতম উদ্ভাবক কে?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="answer(this,3,'q3',false,'মার্ক জাকারবার্গ ২০০৪ সালের ৪ ফেব্রুয়ারি তার তিন বন্ধুর সাথে ফেসবুক চালু করেন। তিনি হার্ভার্ড বিশ্ববিদ্যালয়ের শিক্ষার্থী ছিলেন।')"><div class="q-opt-key">ক</div>স্টিভ জবস</div>
+          <div class="q-opt" onclick="answer(this,3,'q3',false,'মার্ক জাকারবার্গ ২০০৪ সালের ৪ ফেব্রুয়ারি তার তিন বন্ধুর সাথে ফেসবুক চালু করেন।')"><div class="q-opt-key">খ</div>বিল গেটস</div>
+          <div class="q-opt" onclick="answer(this,3,'q3',true,'মার্ক জাকারবার্গ ২০০৪ সালের ৪ ফেব্রুয়ারি তার তিন বন্ধুর সাথে ফেসবুক চালু করেন।')"><div class="q-opt-key">গ</div>মার্ক জাকারবার্গ</div>
+          <div class="q-opt" onclick="answer(this,3,'q3',false,'মার্ক জাকারবার্গ ফেসবুকের প্রতিষ্ঠাতা। টিম বার্নার্স-লি WWW-এর জনক।')"><div class="q-opt-key">ঘ</div>টিম বার্নার্স-লি</div>
+        </div>
+        <div class="q-explain" id="q3-exp"></div>
+        <div class="q-footer"><div class="q-counter">৩ / ১৫</div><button class="q-btn" id="q3-btn" onclick="nextQ(3)">পরের প্রশ্ন →</button></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="q-block" id="q4">
+        <div class="q-num">প্রশ্ন ০৪ / ১৫ · বোর্ড প্রশ্ন ২০২৩</div>
+        <div class="q-text">সরকারি কাজে তথ্য ও যোগাযোগ প্রযুক্তি ব্যবহারের ফলে—<br>i. স্বল্পসময়ে সরকারি সেবা পাওয়া যাবে<br>ii. সরকারি সেবার মান উন্নত হবে<br>iii. ছুটির দিনেও অনেক সরকারি সেবা পাওয়া যাবে<br><br>নিচের কোনটি সঠিক?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="answer(this,4,'q4',false,'তিনটি বিবৃতিই সঠিক। ই-গভর্ন্যান্সের মাধ্যমে স্বল্পসময়ে, উন্নতমানে এবং ২৪/৭ সেবা পাওয়া সম্ভব।')"><div class="q-opt-key">ক</div>i ও ii</div>
+          <div class="q-opt" onclick="answer(this,4,'q4',false,'তিনটি বিবৃতিই সঠিক। ই-গভর্ন্যান্সের মাধ্যমে স্বল্পসময়ে, উন্নতমানে এবং ২৪/৭ সেবা পাওয়া সম্ভব।')"><div class="q-opt-key">খ</div>i ও iii</div>
+          <div class="q-opt" onclick="answer(this,4,'q4',false,'তিনটি বিবৃতিই সঠিক।')"><div class="q-opt-key">গ</div>ii ও iii</div>
+          <div class="q-opt" onclick="answer(this,4,'q4',true,'তিনটি বিবৃতিই সঠিক। ই-গভর্ন্যান্সের মাধ্যমে স্বল্পসময়ে, উন্নতমানে এবং ২৪/৭ (ছুটির দিনেও) সেবা পাওয়া সম্ভব।')"><div class="q-opt-key">ঘ</div>i, ii ও iii</div>
+        </div>
+        <div class="q-explain" id="q4-exp"></div>
+        <div class="q-footer"><div class="q-counter">৪ / ১৫</div><button class="q-btn" id="q4-btn" onclick="nextQ(4)">পরের প্রশ্ন →</button></div>
+      </div>
+
+      <!-- Q5 passage-based -->
+      <div class="q-block" id="q5">
+        <div class="q-num">প্রশ্ন ০৫–০৬ / ১৫ · উদ্দীপক ভিত্তিক বোর্ড প্রশ্ন</div>
+        <div class="q-passage">সুমন আহমেদ সেন্টমার্টিন বেড়াতে গিয়ে অসুস্থ হয়ে পড়েন। ফোনে তিনি ঢাকায় একজন চিকিৎসকের সাথে যোগাযোগ করেন। ডাক্তার তাঁকে দ্রুত হাসপাতালে যেতে বলেন। পরে হাসপাতালের ডাক্তার ঢাকার বিশেষজ্ঞ ডাক্তারের পরামর্শ গ্রহণ করে সুমন আহমেদের চিকিৎসার ব্যবস্থা করলেন।</div>
+        <div class="q-text">স্থানীয় ডাক্তার যে পদ্ধতিতে বিশেষজ্ঞ ডাক্তারের পরামর্শ গ্রহণ করতে পারেন তা হলো—<br>i. টেলিমেডিসিন সেবা<br>ii. ই-স্বাস্থ্য সেবা<br>iii. ই-কমার্স সেবা<br><br>নিচের কোনটি সঠিক?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="answer(this,5,'q5',true,'টেলিমেডিসিন ও ই-স্বাস্থ্যসেবা — এই দুটির মাধ্যমে দূর থেকে বিশেষজ্ঞ ডাক্তারের পরামর্শ নেওয়া যায়। ই-কমার্স বাণিজ্যিক সেবা, স্বাস্থ্যসেবা নয়।')"><div class="q-opt-key">ক</div>i ও ii</div>
+          <div class="q-opt" onclick="answer(this,5,'q5',false,'ই-কমার্স স্বাস্থ্যসেবা নয়, এটি বাণিজ্যিক সেবা। সঠিক উত্তর i ও ii।')"><div class="q-opt-key">খ</div>i ও iii</div>
+          <div class="q-opt" onclick="answer(this,5,'q5',false,'ই-কমার্স স্বাস্থ্যসেবা নয়।')"><div class="q-opt-key">গ</div>ii ও iii</div>
+          <div class="q-opt" onclick="answer(this,5,'q5',false,'ই-কমার্স স্বাস্থ্যসেবা নয়।')"><div class="q-opt-key">ঘ</div>i, ii ও iii</div>
+        </div>
+        <div class="q-explain" id="q5-exp"></div>
+        <div class="q-footer"><div class="q-counter">৫ / ১৫</div><button class="q-btn" id="q5-btn" onclick="nextQ(5)">পরের প্রশ্ন →</button></div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="q-block" id="q6">
+        <div class="q-num">প্রশ্ন ০৬ / ১৫ · উদ্দীপক ভিত্তিক</div>
+        <div class="q-passage">সুমন আহমেদ সেন্টমার্টিন বেড়াতে গিয়ে অসুস্থ হয়ে পড়েন। ফোনে তিনি ঢাকায় একজন চিকিৎসকের সাথে যোগাযোগ করেন।</div>
+        <div class="q-text">সুমন আহমেদের চিকিৎসায় কোন প্রযুক্তিটির ভূমিকা প্রধান?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="answer(this,6,'q6',true,'আইসিটি (তথ্য ও যোগাযোগ প্রযুক্তি) ব্যবহার করে ফোনে যোগাযোগ এবং টেলিমেডিসিন সেবা পাওয়া সম্ভব হয়েছে।')"><div class="q-opt-key">ক</div>আইসিটি</div>
+          <div class="q-opt" onclick="answer(this,6,'q6',false,'টেলিভিশন সরাসরি যোগাযোগের মাধ্যম নয়।')"><div class="q-opt-key">খ</div>টেলিভিশন</div>
+          <div class="q-opt" onclick="answer(this,6,'q6',false,'রোবট এখানে প্রযোজ্য নয়।')"><div class="q-opt-key">গ</div>রোবট</div>
+          <div class="q-opt" onclick="answer(this,6,'q6',false,'কম্পিউটার একা নয়, সামগ্রিক ICT ব্যবস্থা এখানে কাজ করেছে।')"><div class="q-opt-key">ঘ</div>কম্পিউটার</div>
+        </div>
+        <div class="q-explain" id="q6-exp"></div>
+        <div class="q-footer"><div class="q-counter">৬ / ১৫</div><button class="q-btn" id="q6-btn" onclick="nextQ(6)">পরের প্রশ্ন →</button></div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="q-block" id="q7">
+        <div class="q-num">প্রশ্ন ০৭ / ১৫</div>
+        <div class="q-text">একুশ শতকে সাধারণ মানুষকে পৃথিবীর সম্পদ বলা হয়েছে কেন?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="answer(this,7,'q7',false,'একুশ শতকের সম্পদ জ্ঞান। মানুষ জ্ঞান অন্বেষণ, ধারণ ও ব্যবহার করতে পারে — তাই মানুষ এই শতকের প্রধান সম্পদ।')"><div class="q-opt-key">ক</div>মানুষ সংখ্যায় বেশি</div>
+          <div class="q-opt" onclick="answer(this,7,'q7',true,'একুশ শতকে জ্ঞান সবচেয়ে মূল্যবান সম্পদ। মানুষ জ্ঞান অন্বেষণ করতে পারে, ধারণ করতে পারে এবং ব্যবহার করে নতুন তথ্য সৃষ্টি করতে পারে।')"><div class="q-opt-key">খ</div>মানুষ জ্ঞান অন্বেষণ ও ব্যবহার করতে পারে</div>
+          <div class="q-opt" onclick="answer(this,7,'q7',false,'শারীরিক শ্রম নয়, জ্ঞান এই শতকের মূল সম্পদ।')"><div class="q-opt-key">গ</div>মানুষ শারীরিক শ্রম দিতে পারে</div>
+          <div class="q-opt" onclick="answer(this,7,'q7',false,'উৎপাদন নয়, জ্ঞান সৃষ্টি ও ব্যবহারই মূল বিষয়।')"><div class="q-opt-key">ঘ</div>মানুষ পণ্য উৎপাদন করতে পারে</div>
+        </div>
+        <div class="q-explain" id="q7-exp"></div>
+        <div class="q-footer"><div class="q-counter">৭ / ১৫</div><button class="q-btn" id="q7-btn" onclick="nextQ(7)">পরের প্রশ্ন →</button></div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="q-block" id="q8">
+        <div class="q-num">প্রশ্ন ০৮ / ১৫</div>
+        <div class="q-text">COD-এর পূর্ণরূপ কী?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="answer(this,8,'q8',false,'Cash on Delivery — পণ্য পাওয়ার পর নগদ টাকা পরিশোধ।')"><div class="q-opt-key">ক</div>Cash on Demand</div>
+          <div class="q-opt" onclick="answer(this,8,'q8',true,'COD = Cash on Delivery। ক্রেতা পণ্য পাওয়ার পর টাকা দেন। এটি নিরাপদ পেমেন্ট পদ্ধতি।')"><div class="q-opt-key">খ</div>Cash on Delivery</div>
+          <div class="q-opt" onclick="answer(this,8,'q8',false,'এটি সঠিক নয়। COD = Cash on Delivery।')"><div class="q-opt-key">গ</div>Credit on Delivery</div>
+          <div class="q-opt" onclick="answer(this,8,'q8',false,'এটি সঠিক নয়। COD = Cash on Delivery।')"><div class="q-opt-key">ঘ</div>Card on Demand</div>
+        </div>
+        <div class="q-explain" id="q8-exp"></div>
+        <div class="q-footer"><div class="q-counter">৮ / ১৫</div><button class="q-btn" id="q8-btn" onclick="nextQ(8)">পরের প্রশ্ন →</button></div>
+      </div>
+
+      <!-- Q9 -->
+      <div class="q-block" id="q9">
+        <div class="q-num">প্রশ্ন ০৯ / ১৫</div>
+        <div class="q-text">ই-লার্নিং সনাতন শিক্ষার কী?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="answer(this,9,'q9',false,'ই-লার্নিং সনাতন শিক্ষাকে প্রতিস্থাপন করে না। এটি পরিপূরক।')"><div class="q-opt-key">ক</div>বিকল্প</div>
+          <div class="q-opt" onclick="answer(this,9,'q9',true,'ই-লার্নিং সনাতন শিক্ষার পরিপূরক — পাশাপাশি চলে, প্রতিস্থাপন করে না। শিক্ষকের ভূমিকা অপরিহার্য।')"><div class="q-opt-key">খ</div>পরিপূরক</div>
+          <div class="q-opt" onclick="answer(this,9,'q9',false,'ই-লার্নিং শিক্ষার সাথে বিরোধিতা করে না।')"><div class="q-opt-key">গ</div>বিরোধী</div>
+          <div class="q-opt" onclick="answer(this,9,'q9',false,'ই-লার্নিং শিক্ষার প্রতিস্থাপক নয়, পরিপূরক।')"><div class="q-opt-key">ঘ</div>প্রতিস্থাপক</div>
+        </div>
+        <div class="q-explain" id="q9-exp"></div>
+        <div class="q-footer"><div class="q-counter">৯ / ১৫</div><button class="q-btn" id="q9-btn" onclick="nextQ(9)">পরের প্রশ্ন →</button></div>
+      </div>
+
+      <!-- Q10 -->
+      <div class="q-block" id="q10">
+        <div class="q-num">প্রশ্ন ১০ / ১৫</div>
+        <div class="q-text">প্রথম ই-মেইল কে পাঠিয়েছিলেন?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="answer(this,10,'q10',false,'রেমন্ড স্যামুয়েল টমলিনসন ১৯৭১ সালে ARPANET-এ প্রথম ই-মেইল পাঠান।')"><div class="q-opt-key">ক</div>বিল গেটস</div>
+          <div class="q-opt" onclick="answer(this,10,'q10',false,'স্টিভ জবস ই-মেইলের উদ্ভাবক নন।')"><div class="q-opt-key">খ</div>স্টিভ জবস</div>
+          <div class="q-opt" onclick="answer(this,10,'q10',true,'রেমন্ড স্যামুয়েল টমলিনসন ১৯৭১ সালে আমেরিকার ARPANET-এ ইলেকট্রনিক মাধ্যমে প্রথম ই-মেইল পাঠান।')"><div class="q-opt-key">গ</div>রেমন্ড স্যামুয়েল টমলিনসন</div>
+          <div class="q-opt" onclick="answer(this,10,'q10',false,'মার্কনি বেতার তরঙ্গের উদ্ভাবক, ই-মেইলের নয়।')"><div class="q-opt-key">ঘ</div>মার্কনি</div>
+        </div>
+        <div class="q-explain" id="q10-exp"></div>
+        <div class="q-footer"><div class="q-counter">১০ / ১৫</div><button class="q-btn" id="q10-btn" onclick="nextQ(10)">পরের প্রশ্ন →</button></div>
+      </div>
+
+      <!-- Q11 -->
+      <div class="q-block" id="q11">
+        <div class="q-num">প্রশ্ন ১১ / ১৫</div>
+        <div class="q-text">বাংলাদেশ স্যাটেলাইট-১ কত সালে উৎক্ষেপিত হয়?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="answer(this,11,'q11',false,'সঠিক বছর ২০১৮।')"><div class="q-opt-key">ক</div>২০১৫</div>
+          <div class="q-opt" onclick="answer(this,11,'q11',false,'সঠিক বছর ২০১৮।')"><div class="q-opt-key">খ</div>২০১৬</div>
+          <div class="q-opt" onclick="answer(this,11,'q11',false,'সঠিক বছর ২০১৮।')"><div class="q-opt-key">গ</div>২০১৭</div>
+          <div class="q-opt" onclick="answer(this,11,'q11',true,'২০১৮ সালের ১২ই মে বাংলাদেশ স্যাটেলাইট-১ মহাকাশে প্রেরণ করা হয়। বাংলাদেশ বিশ্বের ৫৭তম স্যাটেলাইট দেশ হিসেবে স্বীকৃতি পায়।')"><div class="q-opt-key">ঘ</div>২০১৮</div>
+        </div>
+        <div class="q-explain" id="q11-exp"></div>
+        <div class="q-footer"><div class="q-counter">১১ / ১৫</div><button class="q-btn" id="q11-btn" onclick="nextQ(11)">পরের প্রশ্ন →</button></div>
+      </div>
+
+      <!-- Q12 -->
+      <div class="q-block" id="q12">
+        <div class="q-num">প্রশ্ন ১২ / ১৫</div>
+        <div class="q-text">Twitter-এ একটি বার্তায় সর্বোচ্চ কতটি অক্ষর ব্যবহার করা যায়?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="answer(this,12,'q12',false,'সঠিক উত্তর ২৮০।')"><div class="q-opt-key">ক</div>১৪০</div>
+          <div class="q-opt" onclick="answer(this,12,'q12',true,'Twitter-এ ব্যবহারকারীরা সর্বোচ্চ ২৮০ Character-এর মধ্যে বার্তা প্রকাশ করতে পারেন। এই বার্তাকে tweet বলা হয়।')"><div class="q-opt-key">খ</div>২৮০</div>
+          <div class="q-opt" onclick="answer(this,12,'q12',false,'সঠিক উত্তর ২৮০।')"><div class="q-opt-key">গ</div>৩৬০</div>
+          <div class="q-opt" onclick="answer(this,12,'q12',false,'সঠিক উত্তর ২৮০।')"><div class="q-opt-key">ঘ</div>৫০০</div>
+        </div>
+        <div class="q-explain" id="q12-exp"></div>
+        <div class="q-footer"><div class="q-counter">১২ / ১৫</div><button class="q-btn" id="q12-btn" onclick="nextQ(12)">পরের প্রশ্ন →</button></div>
+      </div>
+
+      <!-- Q13 -->
+      <div class="q-block" id="q13">
+        <div class="q-num">প্রশ্ন ১৩ / ১৫</div>
+        <div class="q-text">ই-পূর্জি সেবা কাদের জন্য?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="answer(this,13,'q13',false,'ই-পূর্জি আখচাষিদের জন্য, শিক্ষার্থীদের জন্য নয়।')"><div class="q-opt-key">ক</div>শিক্ষার্থীদের জন্য</div>
+          <div class="q-opt" onclick="answer(this,13,'q13',false,'চিকিৎসকদের জন্য নয়।')"><div class="q-opt-key">খ</div>চিকিৎসকদের জন্য</div>
+          <div class="q-opt" onclick="answer(this,13,'q13',true,'ই-পূর্জি হলো চিনিকলের আওতাধীন আখচাষিদের জন্য একটি অনুমতিপত্র। এসএমএসের মাধ্যমে আখচাষিরা পূর্জির তথ্য পান।')"><div class="q-opt-key">গ</div>আখচাষিদের জন্য</div>
+          <div class="q-opt" onclick="answer(this,13,'q13',false,'জমির মালিকদের জন্য ই-পর্চা, ই-পূর্জি নয়।')"><div class="q-opt-key">ঘ</div>জমির মালিকদের জন্য</div>
+        </div>
+        <div class="q-explain" id="q13-exp"></div>
+        <div class="q-footer"><div class="q-counter">১৩ / ১৫</div><button class="q-btn" id="q13-btn" onclick="nextQ(13)">পরের প্রশ্ন →</button></div>
+      </div>
+
+      <!-- Q14 -->
+      <div class="q-block" id="q14">
+        <div class="q-num">প্রশ্ন ১৪ / ১৫</div>
+        <div class="q-text">আডা লাভলেসকে প্রথম প্রোগ্রামার বলা হয় কারণ—</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="answer(this,14,'q14',false,'আডা লাভলেস কম্পিউটার তৈরি করেননি, তিনি প্রোগ্রামিং ধারণার প্রবর্তক।')"><div class="q-opt-key">ক</div>তিনি প্রথম কম্পিউটার তৈরি করেন</div>
+          <div class="q-opt" onclick="answer(this,14,'q14',false,'ইন্টারনেট তৈরি তাঁর কাজ নয়।')"><div class="q-opt-key">খ</div>তিনি ইন্টারনেট তৈরি করেন</div>
+          <div class="q-opt" onclick="answer(this,14,'q14',true,'আডা লাভলেস চার্লস ব্যাবেজের অ্যানালিটিক্যাল ইঞ্জিনকে কাজে লাগানোর জন্য অ্যালগরিদম তৈরি করেন — এটাই প্রোগ্রামিং ধারণার প্রবর্তন। তাই তাঁকে প্রথম প্রোগ্রামার বলা হয়।')"><div class="q-opt-key">গ</div>তিনি অ্যালগরিদম তৈরি করেন এবং প্রোগ্রামিং ধারণার প্রবর্তক</div>
+          <div class="q-opt" onclick="answer(this,14,'q14',false,'ফেসবুকের সাথে তাঁর সম্পর্ক নেই।')"><div class="q-opt-key">ঘ</div>তিনি প্রথম ফেসবুক চালু করেন</div>
+        </div>
+        <div class="q-explain" id="q14-exp"></div>
+        <div class="q-footer"><div class="q-counter">১৪ / ১৫</div><button class="q-btn" id="q14-btn" onclick="nextQ(14)">পরের প্রশ্ন →</button></div>
+      </div>
+
+      <!-- Q15 -->
+      <div class="q-block" id="q15">
+        <div class="q-num">প্রশ্ন ১৫ / ১৫</div>
+        <div class="q-text">IDI সূচক ২০২৪-এ বাংলাদেশের অবস্থান কত?</div>
+        <div class="q-opts">
+          <div class="q-opt" onclick="answer(this,15,'q15',false,'সঠিক উত্তর ১৯৩টি দেশের মধ্যে ১০০তম।')"><div class="q-opt-key">ক</div>৫০তম</div>
+          <div class="q-opt" onclick="answer(this,15,'q15',false,'সঠিক উত্তর ১০০তম।')"><div class="q-opt-key">খ</div>৭৫তম</div>
+          <div class="q-opt" onclick="answer(this,15,'q15',true,'ই-গভর্নমেন্ট ডেভেলপমেন্ট ইনডেক্স (IDI) ২০২৪-এ ১৯৩টি দেশের মধ্যে বাংলাদেশের অবস্থান ১০০তম।')"><div class="q-opt-key">গ</div>১০০তম</div>
+          <div class="q-opt" onclick="answer(this,15,'q15',false,'সঠিক উত্তর ১০০তম।')"><div class="q-opt-key">ঘ</div>১৩০তম</div>
+        </div>
+        <div class="q-explain" id="q15-exp"></div>
+        <div class="q-footer"><div class="q-counter">১৫ / ১৫</div><button class="q-btn" id="q15-btn" onclick="nextQ(15)">ফলাফল দেখো 🎯</button></div>
+      </div>
+
+    </div><!-- /q-container -->
+
+    <!-- Result -->
+    <div class="quiz-result" id="quiz-result">
+      <div class="result-emoji" id="result-emoji">🎉</div>
+      <div class="result-score" id="result-score">০/১৫</div>
+      <div class="result-msg" id="result-msg">চমৎকার!</div>
+      <button class="result-btn" onclick="restartQuiz()">আবার চেষ্টা করো 🔄</button>
+    </div>
+
+  </div><!-- /quiz-section -->
+</div>
+
+</main>
+</div><!-- /layout -->
+
+<script>
+/* ════ THEME ════ */
+function toggleTheme() {
+  const h = document.documentElement;
+  const isDark = h.getAttribute('data-theme') === 'dark';
+  h.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.querySelectorAll('.icon-btn[onclick="toggleTheme()"]').forEach(b => b.textContent = isDark ? '🌙' : '☀️');
+}
+
+/* ════ SIDEBAR ════ */
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sb-overlay').classList.toggle('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sb-overlay').classList.remove('show');
+}
+function sbClick(el) {
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  if (window.innerWidth <= 900) closeSidebar();
+}
+
+/* ════ MOBILE MENU SHOW ════ */
+if (window.innerWidth <= 900) document.getElementById('mobile-menu').style.display = 'flex';
+window.addEventListener('resize', () => {
+  document.getElementById('mobile-menu').style.display = window.innerWidth <= 900 ? 'flex' : 'none';
+});
+
+/* ════ TOPIC ACCORDION ════ */
+function toggleTopic(header) {
+  const card = header.closest('.topic-card');
+  const isOpen = card.classList.contains('open');
+  card.classList.toggle('open', !isOpen);
+}
+
+/* ════ SCROLL PROGRESS ════ */
+function updateProgress() {
+  const el = document.documentElement;
+  const scrolled = el.scrollTop / (el.scrollHeight - el.clientHeight) * 100;
+  const pct = Math.round(Math.min(scrolled, 100));
+  document.getElementById('sb-fill').style.width = pct + '%';
+  document.getElementById('sb-prog-label').textContent = pct + '% সম্পন্ন';
+  // active sidebar
+  const sections = ['hero','sec-ekush','sec-pioneers','sec-elearning','sec-egovernance','sec-eservice','sec-ecommerce','sec-social','sec-job','sec-revision','sec-practice','sec-quiz'];
+  for (const id of sections.reverse()) {
+    const el2 = document.getElementById(id);
+    if (!el2) continue;
+    if (el2.getBoundingClientRect().top <= 90) {
+      document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+      const link = document.querySelector(`.sb-item[href="#${id}"]`);
+      if (link) link.classList.add('active');
+      break;
+    }
+  }
+}
+document.addEventListener('scroll', updateProgress);
+
+/* ════ PRACTICE TASKS ════ */
+function toggleTask(el) {
+  el.classList.toggle('done');
+  el.querySelector('.task-check').textContent = el.classList.contains('done') ? '✓' : '';
+  const done = document.querySelectorAll('.practice-task.done').length;
+  const total = document.querySelectorAll('.practice-task').length;
+  document.getElementById('task-fill').style.width = (done/total*100) + '%';
+  document.getElementById('task-label').textContent = done + '/' + total + ' সম্পন্ন';
+}
+
+/* ════ BOOKMARK ════ */
+let bookmarks = JSON.parse(localStorage.getItem('ict_bookmarks') || '[]');
+function toggleBookmark(id) {
+  const idx = bookmarks.indexOf(id);
+  if (idx === -1) { bookmarks.push(id); showToast('🔖 বুকমার্ক সংরক্ষিত!'); }
+  else { bookmarks.splice(idx, 1); showToast('🗑️ বুকমার্ক সরানো হয়েছে'); }
+  localStorage.setItem('ict_bookmarks', JSON.stringify(bookmarks));
+  ['bm-top','bm-hero'].forEach(id2 => {
+    const el = document.getElementById(id2);
+    if (el) el.classList.toggle('saved', bookmarks.includes(id));
+  });
+}
+['bm-top','bm-hero'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el && bookmarks.includes('ch1')) el.classList.add('saved');
+});
+
+/* ════ TOAST ════ */
+let toastTimer;
+function showToast(msg) {
+  clearTimeout(toastTimer);
+  const existing = document.querySelector('.toast');
+  if (existing) existing.remove();
+  const t = document.createElement('div');
+  t.className = 'toast'; t.textContent = msg;
+  document.body.appendChild(t);
+  toastTimer = setTimeout(() => t.remove(), 2500);
+}
+
+/* ════ SEARCH ════ */
+const searchData = [
+  { title: 'একুশ শতক ও ICT', section: '#sec-ekush', excerpt: 'একুশ শতকের সম্পদ হলো জ্ঞান। Globalization ও Internationalization।' },
+  { title: 'চার্লস ব্যাবেজ', section: '#sec-pioneers', excerpt: '১৭৯১–১৮৭১। আধুনিক কম্পিউটারের জনক। ডিফারেন্স ইঞ্জিন উদ্ভাবক।' },
+  { title: 'আডা লাভলেস', section: '#sec-pioneers', excerpt: '১৮১৫–১৮৫২। বিশ্বের প্রথম প্রোগ্রামার। প্রোগ্রামিং ধারণার প্রবর্তক।' },
+  { title: 'মার্ক জাকারবার্গ', section: '#sec-pioneers', excerpt: 'জন্ম ১৪ মে, ১৯৮৪। ফেসবুকের প্রতিষ্ঠাতা।' },
+  { title: 'ই-লার্নিং', section: '#sec-elearning', excerpt: 'Electronic Learning। সনাতন শিক্ষার পরিপূরক, বিকল্প নয়।' },
+  { title: 'ই-গভর্ন্যান্স', section: '#sec-egovernance', excerpt: 'শাসন ব্যবস্থায় ডিজিটাল পন্থার প্রয়োগ। IDI সূচকে ১০০তম।' },
+  { title: 'ই-পর্চা সেবা', section: '#sec-eservice', excerpt: 'জমির রেকর্ডের অনুলিপি অনলাইনে সংগ্রহ।' },
+  { title: 'ই-কমার্স ও COD', section: '#sec-ecommerce', excerpt: 'Cash on Delivery। পণ্য পেলে তারপর টাকা দাও।' },
+  { title: 'সামাজিক যোগাযোগ মাধ্যম', section: '#sec-social', excerpt: 'Facebook, Twitter, Instagram, LinkedIn।' },
+  { title: 'Tweet কী?', section: '#sec-social', excerpt: 'Twitter-এ সর্বোচ্চ ২৮০ অক্ষরের বার্তা।' },
+  { title: 'বাংলাদেশ স্যাটেলাইট', section: '#sec-eservice', excerpt: '২০১৮ সালের ১২ই মে। বিশ্বের ৫৭তম স্যাটেলাইট দেশ।' },
+  { title: 'আউটসোর্সিং ও ফ্রিল্যান্সিং', section: '#sec-job', excerpt: 'বাংলাদেশ ফ্রিল্যান্সিংয়ে বিশ্বে দ্বিতীয়।' },
+  { title: 'Globalization', section: '#sec-ekush', excerpt: 'ভৌগোলিক সীমানা ছাড়িয়ে বিশ্বব্যাপী ছড়িয়ে পড়া।' },
+  { title: 'IDI সূচক', section: '#sec-egovernance', excerpt: 'E-Government Development Index। ২০২৪-এ বাংলাদেশ ১৯৩টির মধ্যে ১০০তম।' },
+];
+function openSearch() { document.getElementById('search-overlay').classList.add('show'); document.getElementById('search-input').focus(); }
+function closeSearch() { document.getElementById('search-overlay').classList.remove('show'); document.getElementById('search-results').innerHTML = ''; document.getElementById('search-input').value = ''; }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSearch(); if ((e.ctrlKey||e.metaKey) && e.key === 'k') { e.preventDefault(); openSearch(); } });
+function doSearch(q) {
+  const res = document.getElementById('search-results');
+  if (!q.trim()) { res.innerHTML = ''; return; }
+  const matches = searchData.filter(d => d.title.includes(q) || d.excerpt.includes(q));
+  if (!matches.length) { res.innerHTML = '<div style="padding:16px 20px;color:var(--text-muted);font-size:13px">কোনো ফলাফল পাওয়া যায়নি।</div>'; return; }
+  res.innerHTML = matches.map(m => `<div class="search-result-item" onclick="goToSection('${m.section}')"><div class="search-result-title">${m.title}</div><div class="search-result-excerpt">${m.excerpt}</div></div>`).join('');
+}
+function goToSection(href) {
+  closeSearch();
+  setTimeout(() => { const el = document.querySelector(href); if (el) el.scrollIntoView({behavior:'smooth'}); }, 100);
+}
+
+/* ════ QUIZ ════ */
+let qScore = 0, qTotal = 15, qDone = {};
+function answer(optEl, qNum, qId, correct, exp) {
+  if (qDone[qId]) return;
+  qDone[qId] = true;
+  const opts = optEl.closest('.q-opts').querySelectorAll('.q-opt');
+  opts.forEach(o => { o.classList.add('locked'); });
+  optEl.classList.add(correct ? 'correct' : 'wrong');
+  // mark correct
+  if (!correct) opts.forEach(o => { if (o.getAttribute('onclick').includes(',true,')) o.classList.add('correct'); });
+  if (correct) qScore++;
+  const expEl = document.getElementById(qId + '-exp');
+  if (expEl) { expEl.className = 'q-explain show ' + (correct ? 'correct-exp' : 'wrong-exp'); expEl.textContent = (correct ? '✅ সঠিক! ' : '❌ ভুল। ') + exp; }
+  const btn = document.getElementById(qId + '-btn');
+  if (btn) btn.classList.add('ready');
+  document.getElementById('q-score').textContent = 'স্কোর: ' + qScore + '/' + qTotal;
+}
+function nextQ(current) {
+  document.getElementById('q' + current).classList.remove('active');
+  const next = current + 1;
+  document.getElementById('q-prog').style.width = ((next / qTotal) * 100) + '%';
+  if (next <= qTotal) {
+    document.getElementById('q' + next).classList.add('active');
+  } else {
+    document.getElementById('q-container').style.display = 'none';
+    const res = document.getElementById('quiz-result');
+    res.style.display = 'block';
+    const pct = Math.round(qScore / qTotal * 100);
+    document.getElementById('result-score').textContent = qScore + '/' + qTotal;
+    document.getElementById('result-emoji').textContent = pct >= 80 ? '🏆' : pct >= 60 ? '🎉' : pct >= 40 ? '📚' : '💪';
+    document.getElementById('result-msg').textContent = pct >= 80 ? 'চমৎকার! তুমি এই অধ্যায় দুর্দান্তভাবে রপ্ত করেছ!' : pct >= 60 ? 'ভালো করেছ! আরেকটু পড়লে আরও ভালো হবে।' : pct >= 40 ? 'আরও পড়ো এবং আবার চেষ্টা করো।' : 'হতাশ হয়ো না! আবার পড়ো এবং চেষ্টা করো।';
+  }
+}
+function restartQuiz() {
+  qScore = 0; qDone = {};
+  document.getElementById('quiz-result').style.display = 'none';
+  document.getElementById('q-container').style.display = 'block';
+  document.querySelectorAll('.q-block').forEach((b,i) => b.classList.toggle('active', i===0));
+  document.querySelectorAll('.q-opt').forEach(o => { o.classList.remove('correct','wrong','locked'); });
+  document.querySelectorAll('.q-explain').forEach(e => { e.className = 'q-explain'; e.textContent = ''; });
+  document.querySelectorAll('.q-btn').forEach(b => b.classList.remove('ready'));
+  document.getElementById('q-score').textContent = 'স্কোর: ০/১৫';
+  document.getElementById('q-prog').style.width = '6.67%';
+}
+</script>
+</body>
+</html>
